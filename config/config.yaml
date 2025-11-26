@@ -1,0 +1,11 @@
+service:
+  timeout: "2s"
+  port: 1606
+
+storage:
+  host: "localhost"
+  port: 5432
+  database: "postgres"
+  password: "postgres"
+  username: "postgres"
+  uri: "postgresql://%s:%s@%s:%s/%s"
