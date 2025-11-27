@@ -11,7 +11,7 @@ package mocks
 
 import (
 	context "context"
-	dto "okami-qstn-bnk/internal/models/dto"
+	models "okami-qstn-bnk/internal/models/dto"
 	types "okami-qstn-bnk/internal/pkg/types"
 	reflect "reflect"
 
@@ -44,7 +44,7 @@ func (m *MockService) EXPECT() *MockServiceMockRecorder {
 }
 
 // CreateQuestion mocks base method.
-func (m *MockService) CreateQuestion(ctx context.Context, question *dto.Question) error {
+func (m *MockService) CreateQuestion(ctx context.Context, question *models.Question) error {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "CreateQuestion", ctx, question)
 	ret0, _ := ret[0].(error)
@@ -58,7 +58,7 @@ func (mr *MockServiceMockRecorder) CreateQuestion(ctx, question any) *gomock.Cal
 }
 
 // CreateTemplate mocks base method.
-func (m *MockService) CreateTemplate(ctx context.Context, template *dto.TestTemplate) error {
+func (m *MockService) CreateTemplate(ctx context.Context, template *models.TestTemplate) error {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "CreateTemplate", ctx, template)
 	ret0, _ := ret[0].(error)
@@ -100,10 +100,10 @@ func (mr *MockServiceMockRecorder) DeleteTemplate(ctx, id any) *gomock.Call {
 }
 
 // GetQuestion mocks base method.
-func (m *MockService) GetQuestion(ctx context.Context, id uuid.UUID) (*dto.Question, error) {
+func (m *MockService) GetQuestion(ctx context.Context, id uuid.UUID) (*models.Question, error) {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "GetQuestion", ctx, id)
-	ret0, _ := ret[0].(*dto.Question)
+	ret0, _ := ret[0].(*models.Question)
 	ret1, _ := ret[1].(error)
 	return ret0, ret1
 }
@@ -115,10 +115,10 @@ func (mr *MockServiceMockRecorder) GetQuestion(ctx, id any) *gomock.Call {
 }
 
 // GetQuestionsCollectionWithFilters mocks base method.
-func (m *MockService) GetQuestionsCollectionWithFilters(ctx context.Context, role *types.ModelRole, topic *string, difficulty *int) ([]*dto.Question, error) {
+func (m *MockService) GetQuestionsCollectionWithFilters(ctx context.Context, role *types.ModelRole, topic *string, difficulty *int) ([]*models.Question, error) {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "GetQuestionsCollectionWithFilters", ctx, role, topic, difficulty)
-	ret0, _ := ret[0].([]*dto.Question)
+	ret0, _ := ret[0].([]*models.Question)
 	ret1, _ := ret[1].(error)
 	return ret0, ret1
 }
@@ -130,10 +130,10 @@ func (mr *MockServiceMockRecorder) GetQuestionsCollectionWithFilters(ctx, role, 
 }
 
 // GetTemplate mocks base method.
-func (m *MockService) GetTemplate(ctx context.Context, id uuid.UUID) (*dto.TestTemplate, error) {
+func (m *MockService) GetTemplate(ctx context.Context, id uuid.UUID) (*models.TestTemplate, error) {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "GetTemplate", ctx, id)
-	ret0, _ := ret[0].(*dto.TestTemplate)
+	ret0, _ := ret[0].(*models.TestTemplate)
 	ret1, _ := ret[1].(error)
 	return ret0, ret1
 }
@@ -145,10 +145,10 @@ func (mr *MockServiceMockRecorder) GetTemplate(ctx, id any) *gomock.Call {
 }
 
 // GetTemplatesCollectionWithFilters mocks base method.
-func (m *MockService) GetTemplatesCollectionWithFilters(ctx context.Context, role *types.ModelRole, purpose *types.ModelPurpose) ([]*dto.TestTemplate, error) {
+func (m *MockService) GetTemplatesCollectionWithFilters(ctx context.Context, role *types.ModelRole, purpose *types.ModelPurpose) ([]*models.TestTemplate, error) {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "GetTemplatesCollectionWithFilters", ctx, role, purpose)
-	ret0, _ := ret[0].([]*dto.TestTemplate)
+	ret0, _ := ret[0].([]*models.TestTemplate)
 	ret1, _ := ret[1].(error)
 	return ret0, ret1
 }
@@ -160,10 +160,10 @@ func (mr *MockServiceMockRecorder) GetTemplatesCollectionWithFilters(ctx, role, 
 }
 
 // UpdateQuestion mocks base method.
-func (m *MockService) UpdateQuestion(ctx context.Context, question *dto.Question) (*dto.Question, error) {
+func (m *MockService) UpdateQuestion(ctx context.Context, question *models.Question) (*models.Question, error) {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "UpdateQuestion", ctx, question)
-	ret0, _ := ret[0].(*dto.Question)
+	ret0, _ := ret[0].(*models.Question)
 	ret1, _ := ret[1].(error)
 	return ret0, ret1
 }
@@ -175,10 +175,10 @@ func (mr *MockServiceMockRecorder) UpdateQuestion(ctx, question any) *gomock.Cal
 }
 
 // UpdateTemplate mocks base method.
-func (m *MockService) UpdateTemplate(ctx context.Context, template *dto.TestTemplate) (*dto.TestTemplate, error) {
+func (m *MockService) UpdateTemplate(ctx context.Context, template *models.TestTemplate) (*models.TestTemplate, error) {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "UpdateTemplate", ctx, template)
-	ret0, _ := ret[0].(*dto.TestTemplate)
+	ret0, _ := ret[0].(*models.TestTemplate)
 	ret1, _ := ret[1].(error)
 	return ret0, ret1
 }
@@ -214,7 +214,7 @@ func (m *MockQuestions) EXPECT() *MockQuestionsMockRecorder {
 }
 
 // CreateQuestion mocks base method.
-func (m *MockQuestions) CreateQuestion(ctx context.Context, question *dto.Question) error {
+func (m *MockQuestions) CreateQuestion(ctx context.Context, question *models.Question) error {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "CreateQuestion", ctx, question)
 	ret0, _ := ret[0].(error)
@@ -242,10 +242,10 @@ func (mr *MockQuestionsMockRecorder) DeleteQuestion(ctx, id any) *gomock.Call {
 }
 
 // GetQuestion mocks base method.
-func (m *MockQuestions) GetQuestion(ctx context.Context, id uuid.UUID) (*dto.Question, error) {
+func (m *MockQuestions) GetQuestion(ctx context.Context, id uuid.UUID) (*models.Question, error) {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "GetQuestion", ctx, id)
-	ret0, _ := ret[0].(*dto.Question)
+	ret0, _ := ret[0].(*models.Question)
 	ret1, _ := ret[1].(error)
 	return ret0, ret1
 }
@@ -257,10 +257,10 @@ func (mr *MockQuestionsMockRecorder) GetQuestion(ctx, id any) *gomock.Call {
 }
 
 // GetQuestionsCollectionWithFilters mocks base method.
-func (m *MockQuestions) GetQuestionsCollectionWithFilters(ctx context.Context, role *types.ModelRole, topic *string, difficulty *int) ([]*dto.Question, error) {
+func (m *MockQuestions) GetQuestionsCollectionWithFilters(ctx context.Context, role *types.ModelRole, topic *string, difficulty *int) ([]*models.Question, error) {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "GetQuestionsCollectionWithFilters", ctx, role, topic, difficulty)
-	ret0, _ := ret[0].([]*dto.Question)
+	ret0, _ := ret[0].([]*models.Question)
 	ret1, _ := ret[1].(error)
 	return ret0, ret1
 }
@@ -272,10 +272,10 @@ func (mr *MockQuestionsMockRecorder) GetQuestionsCollectionWithFilters(ctx, role
 }
 
 // UpdateQuestion mocks base method.
-func (m *MockQuestions) UpdateQuestion(ctx context.Context, question *dto.Question) (*dto.Question, error) {
+func (m *MockQuestions) UpdateQuestion(ctx context.Context, question *models.Question) (*models.Question, error) {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "UpdateQuestion", ctx, question)
-	ret0, _ := ret[0].(*dto.Question)
+	ret0, _ := ret[0].(*models.Question)
 	ret1, _ := ret[1].(error)
 	return ret0, ret1
 }
@@ -311,7 +311,7 @@ func (m *MockTemplates) EXPECT() *MockTemplatesMockRecorder {
 }
 
 // CreateTemplate mocks base method.
-func (m *MockTemplates) CreateTemplate(ctx context.Context, template *dto.TestTemplate) error {
+func (m *MockTemplates) CreateTemplate(ctx context.Context, template *models.TestTemplate) error {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "CreateTemplate", ctx, template)
 	ret0, _ := ret[0].(error)
@@ -339,10 +339,10 @@ func (mr *MockTemplatesMockRecorder) DeleteTemplate(ctx, id any) *gomock.Call {
 }
 
 // GetTemplate mocks base method.
-func (m *MockTemplates) GetTemplate(ctx context.Context, id uuid.UUID) (*dto.TestTemplate, error) {
+func (m *MockTemplates) GetTemplate(ctx context.Context, id uuid.UUID) (*models.TestTemplate, error) {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "GetTemplate", ctx, id)
-	ret0, _ := ret[0].(*dto.TestTemplate)
+	ret0, _ := ret[0].(*models.TestTemplate)
 	ret1, _ := ret[1].(error)
 	return ret0, ret1
 }
@@ -354,10 +354,10 @@ func (mr *MockTemplatesMockRecorder) GetTemplate(ctx, id any) *gomock.Call {
 }
 
 // GetTemplatesCollectionWithFilters mocks base method.
-func (m *MockTemplates) GetTemplatesCollectionWithFilters(ctx context.Context, role *types.ModelRole, purpose *types.ModelPurpose) ([]*dto.TestTemplate, error) {
+func (m *MockTemplates) GetTemplatesCollectionWithFilters(ctx context.Context, role *types.ModelRole, purpose *types.ModelPurpose) ([]*models.TestTemplate, error) {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "GetTemplatesCollectionWithFilters", ctx, role, purpose)
-	ret0, _ := ret[0].([]*dto.TestTemplate)
+	ret0, _ := ret[0].([]*models.TestTemplate)
 	ret1, _ := ret[1].(error)
 	return ret0, ret1
 }
@@ -369,10 +369,10 @@ func (mr *MockTemplatesMockRecorder) GetTemplatesCollectionWithFilters(ctx, role
 }
 
 // UpdateTemplate mocks base method.
-func (m *MockTemplates) UpdateTemplate(ctx context.Context, template *dto.TestTemplate) (*dto.TestTemplate, error) {
+func (m *MockTemplates) UpdateTemplate(ctx context.Context, template *models.TestTemplate) (*models.TestTemplate, error) {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "UpdateTemplate", ctx, template)
-	ret0, _ := ret[0].(*dto.TestTemplate)
+	ret0, _ := ret[0].(*models.TestTemplate)
 	ret1, _ := ret[1].(error)
 	return ret0, ret1
 }

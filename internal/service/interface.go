@@ -14,11 +14,6 @@ import (
 var _ Questions = (*questions.Question)(nil)
 var _ Templates = (*templates.Template)(nil)
 
-type Service interface {
-	Questions
-	Templates
-}
-
 type Questions interface {
 	CreateQuestion(ctx context.Context, question *models.Question) error
 	GetQuestion(ctx context.Context, id uuid.UUID) (*models.Question, error)
@@ -30,7 +25,7 @@ type Questions interface {
 type Templates interface {
 	CreateTemplate(ctx context.Context, template *models.TestTemplate) error
 	GetTemplate(ctx context.Context, id uuid.UUID) (*models.TestTemplate, error)
-	GetTemplatesCollectionWithFilters(ctx context.Context, role *types.ModelRole, purpose *types.ModelPurpose) ([]*models.TestTemplate, error)
+	GetTemplatesCollectionWithFilters(ctx context.Context, role *types.ModelRole, purpose *types.ModelPurpose) ([]models.TestTemplate, error)
 	UpdateTemplate(ctx context.Context, template *models.TestTemplate) (*models.TestTemplate, error)
 	DeleteTemplate(ctx context.Context, id uuid.UUID) error
 }

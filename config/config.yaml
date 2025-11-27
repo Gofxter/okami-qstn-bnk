@@ -1,6 +1,6 @@
 service:
   timeout: "2s"
-  port: 1606
+  port: ":1606"
 
 storage:
   host: "localhost"

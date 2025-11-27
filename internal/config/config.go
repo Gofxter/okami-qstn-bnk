@@ -4,6 +4,7 @@ import (
 	"github.com/ilyakaznacheev/cleanenv"
 	"go.uber.org/zap"
 	"os"
+	"time"
 )
 
 type Config struct {
@@ -12,13 +13,15 @@ type Config struct {
 }
 
 type ServiceConfig struct {
-	Port string
+	Timeout time.Duration
+	Port    string
 }
 
 func LoadConfig(path string, logger *zap.Logger) *Config {
 	var cfg = &Config{
 		Service: ServiceConfig{
-			Port: "0000",
+			Timeout: 2 * time.Second,
+			Port:    "0000",
 		},
 		Storage: StorageConfig{
 			Host:     "0.0.0.0",
@@ -30,16 +33,15 @@ func LoadConfig(path string, logger *zap.Logger) *Config {
 	}
 
 	if _, err := os.Stat(path); os.IsNotExist(err) {
-		logger.Debug("config file does not exist",
-			zap.Any("path", path),
-		)
+		logger.Debug("config file does not exist", zap.Any("path", path))
+		return nil
 	}
 
-	if err := cleanenv.ReadConfig(path, &cfg); err != nil {
+	if err := cleanenv.ReadConfig(path, cfg); err != nil {
 		logger.Debug("failed to read config", zap.Error(err))
+		return nil
 	}
 
-	logger.Info("successfully loaded config",
-		zap.Any("config", cfg))
+	logger.Info("successfully loaded config", zap.Any("config", cfg))
 	return cfg
 }

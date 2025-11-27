@@ -7,16 +7,18 @@ import (
 )
 
 type Controller struct {
-	srv    service.Service
-	app    *fiber.App
-	logger *zap.Logger
+	questionSrv service.Questions
+	templateSrv service.Templates
+	app         *fiber.App
+	logger      *zap.Logger
 }
 
-func NewController(logger *zap.Logger, srv service.Service, fiber *fiber.App) *Controller {
+func NewController(logger *zap.Logger, qsrv service.Questions, tsrv service.Templates, fiber *fiber.App) *Controller {
 	return &Controller{
-		srv:    srv,
-		logger: logger,
-		app:    fiber,
+		questionSrv: qsrv,
+		templateSrv: tsrv,
+		logger:      logger,
+		app:         fiber,
 	}
 }
 

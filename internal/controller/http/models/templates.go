@@ -7,9 +7,8 @@ import (
 )
 
 type CreateTemplateRequest struct {
-	Role       types.ModelRole    `json:"role"`
-	Purpose    types.ModelPurpose `json:"purpose"`
-	QuestionId uuid.UUID          `json:"question_id"`
+	Role    types.ModelRole    `json:"role"`
+	Purpose types.ModelPurpose `json:"purpose"`
 }
 
 type GetTemplateByIDResponse struct {

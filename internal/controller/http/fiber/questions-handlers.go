@@ -1,9 +1,12 @@
 package controller
 
 import (
+	"context"
 	"github.com/gofiber/fiber/v2"
+	"github.com/google/uuid"
 	"go.uber.org/zap"
 	"okami-qstn-bnk/internal/controller/http/models"
+	dto "okami-qstn-bnk/internal/models/dto"
 	"okami-qstn-bnk/internal/pkg/types"
 )
 
@@ -34,11 +37,22 @@ func (ctrl *Controller) CreateQuestionsHandler(ctx *fiber.Ctx) error {
 		})
 	}
 
+	// !FIXME OPTION FIELD
+	if err := ctrl.questionSrv.CreateQuestion(context.Background(),
+		&dto.Question{Role: req.Role, Topic: req.Topic, Type: req.Type, Difficulty: req.Difficulty, Text: req.Text}); err != nil {
+		ctrl.logger.Debug("can`t to create question", zap.Error(err))
+		return ctx.JSON(models.ErrorResponse{
+			Message:   "can`t to create question",
+			ErrorCode: fiber.StatusBadRequest,
+		})
+	}
+
 	return ctx.SendStatus(fiber.StatusOK)
 }
 
 func (ctrl *Controller) GetQuestionByIDHandler(ctx *fiber.Ctx) error {
-	_, err := ctx.ParamsInt("id")
+	id := ctx.Params("id", "")
+	unmarshalId, err := uuid.Parse(id)
 	if err != nil {
 		ctrl.logger.Debug("can`t to parse id request", zap.Error(err))
 		return ctx.JSON(models.ErrorResponse{
@@ -47,7 +61,16 @@ func (ctrl *Controller) GetQuestionByIDHandler(ctx *fiber.Ctx) error {
 		})
 	}
 
-	return ctx.JSON(models.GetQuestionByIDResponse{})
+	result, err := ctrl.questionSrv.GetQuestion(context.Background(), unmarshalId)
+	if err != nil {
+		ctrl.logger.Debug("can`t to get question", zap.Error(err))
+		return ctx.JSON(models.ErrorResponse{
+			Message:   "can`t to get question",
+			ErrorCode: fiber.StatusBadRequest,
+		})
+	}
+
+	return ctx.JSON(result)
 }
 
 func (ctrl *Controller) GetQuestionsWithFiltersHandler(ctx *fiber.Ctx) error {
@@ -71,11 +94,20 @@ func (ctrl *Controller) GetQuestionsWithFiltersHandler(ctx *fiber.Ctx) error {
 		}
 	}
 
-	return ctx.JSON(models.GetQuestionsWithFiltersResponse{})
+	result, err := ctrl.questionSrv.GetQuestionsCollectionWithFilters(context.Background(), query.Role, query.Topic, query.Difficulty)
+	if err != nil {
+		ctrl.logger.Debug("can`t to get questions", zap.Error(err))
+		return ctx.JSON(models.ErrorResponse{
+			Message:   "can`t to get questions",
+			ErrorCode: fiber.StatusBadRequest,
+		})
+	}
+
+	return ctx.JSON(result)
 }
 
 func (ctrl *Controller) UpdateQuestionHandler(ctx *fiber.Ctx) error {
-	req := models.UpdateQuestionRequest{Role: nil, Topic: nil, Type: nil, Options: nil, Difficulty: nil, Text: nil}
+	req := models.UpdateQuestionRequest{Role: nil, Topic: nil, Difficulty: nil, Text: nil}
 
 	if err := ctx.BodyParser(&req); err != nil {
 		ctrl.logger.Debug("can`t to parse body requests", zap.Any("body", req), zap.Error(err))
@@ -95,25 +127,33 @@ func (ctrl *Controller) UpdateQuestionHandler(ctx *fiber.Ctx) error {
 		}
 	}
 
-	if req.Type != nil {
-		if err := types.ValidateType(*req.Type); err != nil {
-			ctrl.logger.Debug("can`t to validate type", zap.Error(err))
-			return ctx.JSON(models.ErrorResponse{
-				Message:   "invalid type",
-				ErrorCode: fiber.StatusBadRequest,
-			})
-		}
+	result, err := ctrl.questionSrv.UpdateQuestion(context.Background(), &dto.Question{Role: *req.Role, Topic: *req.Topic, Difficulty: *req.Difficulty, Text: *req.Text})
+	if err != nil {
+		ctrl.logger.Debug("can`t to update question", zap.Error(err))
+		return ctx.JSON(models.ErrorResponse{
+			Message:   "can`t to update question",
+			ErrorCode: fiber.StatusBadRequest,
+		})
 	}
 
-	return ctx.JSON(models.UpdateQuestionResponse{})
+	return ctx.JSON(result)
 }
 
 func (ctrl *Controller) DeleteQuestionHandler(ctx *fiber.Ctx) error {
-	_, err := ctx.ParamsInt("id")
+	id := ctx.Params("id", "")
+	unmarshalId, err := uuid.Parse(id)
 	if err != nil {
 		ctrl.logger.Debug("can`t to parse id request", zap.Error(err))
 		return ctx.JSON(models.ErrorResponse{
 			Message:   "invalid id",
+			ErrorCode: fiber.StatusBadRequest,
+		})
+	}
+
+	if err := ctrl.questionSrv.DeleteQuestion(context.Background(), unmarshalId); err != nil {
+		ctrl.logger.Debug("can`t to delete question", zap.Error(err))
+		return ctx.JSON(models.ErrorResponse{
+			Message:   "can`t to delete question",
 			ErrorCode: fiber.StatusBadRequest,
 		})
 	}

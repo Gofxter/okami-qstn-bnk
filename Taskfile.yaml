@@ -12,15 +12,13 @@ tasks:
     - mockgen -source=internal/service/interface.go -destination=mocks/service/service_mock.go -package=mocks
     - mockgen -source=internal/storage/interface.go -destination=mocks/storage/storage_mock.go -package=mocks
 
-  # !FIXME GEN MIGRATIONS NEED TO CHANGE
   gen-migrations:
     desc: "generating migration files"
-    cmd: migrate create -ext sql -dir ./migrations -seq song
+    cmd: migrate create -ext sql -dir ./migrations -seq qstn-bnk
 
   migrate-down:
     desc: "migrate down"
     cmd: migrate -path ./migrations -database "postgres://postgres:postgres@localhost:5432/postgres?sslmode=disable" down
-  # !FIXME THE END OF MIGRATIONS BLOCK
 
   test:
     desc: "testing"
