@@ -18,7 +18,7 @@ type Questions interface {
 	CreateQuestion(ctx context.Context, question *models.Question) error
 	GetQuestion(ctx context.Context, id uuid.UUID) (*models.Question, error)
 	GetQuestionsCollectionWithFilters(ctx context.Context, role *types.ModelRole, topic *string, difficulty *int) ([]models.Question, error)
-	UpdateQuestion(ctx context.Context, question *models.Question) (models.Question, error)
+	UpdateQuestion(ctx context.Context, question *models.Question) (*models.Question, error)
 	DeleteQuestion(ctx context.Context, id uuid.UUID) error
 }
 

@@ -9,7 +9,7 @@ import (
 
 type Storage interface {
 	CreateQuestion(ctx context.Context, q models.Question)
-	GetQuestionByID(ctx context.Context, id uuid.UUID) models.Question
+	GetQuestionById(ctx context.Context, id uuid.UUID) models.Question
 	GetQuestionsCollectionWithFilters(ctx context.Context, role *types.ModelRole, topic *string, difficulty *int) []models.Question
 	UpdateQuestion(ctx context.Context, q models.Question) models.Question
 	DeleteQuestion(ctx context.Context, id uuid.UUID)
@@ -18,4 +18,6 @@ type Storage interface {
 	GetTemplatesCollectionWithFilters(ctx context.Context, role *types.ModelRole, purpose *types.ModelPurpose) []models.TestTemplate
 	UpdateTemplate(ctx context.Context, t models.TestTemplate) models.TestTemplate
 	DeleteTemplate(ctx context.Context, id uuid.UUID)
+	Ping(ctx context.Context) error
+	Close(ctx context.Context) error
 }

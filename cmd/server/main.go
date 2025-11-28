@@ -1,6 +1,8 @@
 package main
 
 import (
+	"context"
+	"fmt"
 	"github.com/gofiber/fiber/v2"
 	"go.uber.org/zap"
 	"okami-qstn-bnk/internal/config"
@@ -14,28 +16,39 @@ import (
 
 func main() {
 	logger, _ := zap.NewDevelopment()
-
 	cfg := config.LoadConfig("config/config.yaml", logger)
 	cfg.Storage.SetURI(logger)
 
 	storage := gorm.NewStorage(logger, cfg.Storage.GetURI())
+	if err := storage.Ping(context.Background()); err != nil {
+		logger.Fatal("failed to ping to storage", zap.Error(err))
+	}
 
-	qsrv, tsrv := service.RegisterServices(logger, storage)
+	logger.Info(fmt.Sprintf("successfully connected to storage"))
+
+	questionSrv, templatesSrv := service.RegisterServices(logger, storage)
 	wApp := fiber.New()
-	ctrl := controller.NewController(logger, qsrv, tsrv, wApp)
+	ctrl := controller.NewController(logger, questionSrv, templatesSrv, wApp)
 	ctrl.ConfigureRoutes()
+	logger.Info(fmt.Sprintf("successfully configured routes"))
 
 	quit := make(chan os.Signal, 1)
-
 	go func() {
 		if err := wApp.Listen(cfg.Service.Port); err != nil {
 			logger.Fatal("Can't shutdown service", zap.Error(err))
+			return
 		}
 	}()
 
 	signal.Notify(quit, os.Interrupt, syscall.SIGTERM)
 	<-quit
 
+	if err := storage.Close(context.Background()); err != nil {
+		logger.Fatal("failed to close storage", zap.Error(err))
+		return
+	}
+
+	logger.Info("Database disconnected")
 	if err := wApp.Shutdown(); err != nil {
 		logger.Info("Failed to stop server")
 		return

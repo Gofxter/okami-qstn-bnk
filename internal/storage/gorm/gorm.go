@@ -33,7 +33,7 @@ func (g *Gorm) CreateQuestion(ctx context.Context, q models.Question) {
 	g.db.WithContext(ctx).Create(&q)
 }
 
-func (g *Gorm) GetQuestionByID(ctx context.Context, id uuid.UUID) models.Question {
+func (g *Gorm) GetQuestionById(ctx context.Context, id uuid.UUID) models.Question {
 	var q models.Question
 	g.db.WithContext(ctx).Take(&q).Where("id = ?", id)
 	return q
@@ -85,4 +85,34 @@ func (g *Gorm) UpdateTemplate(ctx context.Context, t models.TestTemplate) models
 }
 func (g *Gorm) DeleteTemplate(ctx context.Context, id uuid.UUID) {
 	g.db.WithContext(ctx).Delete(&models.TestTemplate{}, id)
+}
+
+func (g *Gorm) Ping(ctx context.Context) error {
+	storage, err := g.db.WithContext(ctx).DB()
+	if err != nil {
+		g.logger.Error("Failed to connect to database", zap.Error(err))
+		return err
+	}
+
+	if err := storage.Ping(); err != nil {
+		g.logger.Error("Failed to ping to database", zap.Error(err))
+		return err
+	}
+
+	return nil
+}
+
+func (g *Gorm) Close(ctx context.Context) error {
+	storage, err := g.db.WithContext(ctx).DB()
+	if err != nil {
+		g.logger.Error("Failed to connect to database", zap.Error(err))
+		return err
+	}
+
+	if err := storage.Close(); err != nil {
+		g.logger.Error("Failed to close database", zap.Error(err))
+		return err
+	}
+
+	return nil
 }
