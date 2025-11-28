@@ -22,12 +22,12 @@ func (q *Question) GetQuestion(ctx context.Context, id uuid.UUID) (*models.Quest
 	return nil, nil
 }
 
-func (q *Question) GetQuestionsCollectionWithFilters(ctx context.Context, role *types.ModelRole, topic *string, difficulty *int) ([]*models.Question, error) {
+func (q *Question) GetQuestionsCollectionWithFilters(ctx context.Context, role *types.ModelRole, topic *string, difficulty *int) ([]models.Question, error) {
 	return nil, nil
 }
 
-func (q *Question) UpdateQuestion(ctx context.Context, question *models.Question) (*models.Question, error) {
-	return nil, nil
+func (q *Question) UpdateQuestion(ctx context.Context, question *models.Question) (models.Question, error) {
+	return models.Question{}, nil
 }
 
 func (q *Question) DeleteQuestion(ctx context.Context, id uuid.UUID) error {

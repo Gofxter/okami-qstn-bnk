@@ -39,7 +39,7 @@ func (ctrl *Controller) CreateTemplateHandler(ctx *fiber.Ctx) error {
 
 	if err := ctrl.templateSrv.CreateTemplate(context.Background(),
 		&dto.TestTemplate{Role: req.Role, Purpose: req.Purpose}); err != nil {
-		ctrl.logger.Error("can`t create template", zap.Error(err))
+		ctrl.logger.Error("can`t create template")
 		return ctx.JSON(models.ErrorResponse{
 			Message:   "failed to create template",
 			ErrorCode: fiber.StatusInternalServerError,
@@ -112,7 +112,7 @@ func (ctrl *Controller) GetTemplatesWithFiltersHandler(ctx *fiber.Ctx) error {
 		})
 	}
 
-	return ctx.JSON(result)
+	return ctx.JSON(models.GetTemplatesWithFiltersResponse{Result: result})
 }
 
 func (ctrl *Controller) UpdateTemplateHandler(ctx *fiber.Ctx) error {
@@ -156,7 +156,7 @@ func (ctrl *Controller) UpdateTemplateHandler(ctx *fiber.Ctx) error {
 		})
 	}
 
-	return ctx.JSON(result)
+	return ctx.JSON(models.UpdateTemplateResponse(*result))
 }
 
 func (ctrl *Controller) DeleteTemplateHandler(ctx *fiber.Ctx) error {

@@ -29,7 +29,6 @@ type (
 	}
 	UpdateTemplateResponse struct {
 		Id      uuid.UUID          `json:"id"`
-		Name    string             `json:"name"`
 		Role    types.ModelRole    `json:"role"`
 		Purpose types.ModelPurpose `json:"purpose"`
 	}

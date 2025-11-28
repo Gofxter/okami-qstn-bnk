@@ -56,20 +56,4 @@ type (
 	OptionUpdateQuestionRequest struct {
 		Text *string `json:"text"`
 	}
-	UpdateQuestionResponse struct {
-		Id         uuid.UUID                       `json:"id"`
-		Role       types.ModelRole                 `json:"role"`
-		Topic      string                          `json:"topic"`
-		Type       types.ModelType                 `json:"type"`
-		Options    *[]OptionUpdateQuestionResponse `json:"options"`
-		Difficulty int                             `json:"difficulty"`
-		Text       string                          `json:"text"`
-	}
-
-	OptionUpdateQuestionResponse struct {
-		Id         uuid.UUID `json:"id"`
-		QuestionId uuid.UUID `json:"question_id"`
-		Text       string    `json:"text"`
-		IsCorrect  bool      `json:"is_correct"`
-	}
 )

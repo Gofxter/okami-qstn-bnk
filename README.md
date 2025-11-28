@@ -1,15 +1,40 @@
 # Реализация сервиса Question Bank
 
-7 часов + 19:00 - N
+```shell
+  task gen-migrations        генерация миграция
+  task migrate               migrate up
+  task migrate-down:         migrate down
+  task gen-mock:             генерация моков на сервис слой и БД
+  task test:                 запуск тестов
+  task local-run:            локальный запуск
+  task docker-run            запуск из докера
+```
 
-### Запуск локально
-Два сценария для запуска сервиса
+### Сценарии для запуска сервиса
+Локально:
+```shell
+  migrate -path ./migrations -database "postgres://postgres:postgres@localhost:5432/postgres?sslmode=disable" up
+  go run cmd/server/main.go
 ```
-$ task local-run
+Докер:
+```shell
+    echo docker
 ```
-или
+
+### Запросы curl
+```shell
+    echo curl
 ```
-$ migrate -path ./migrations -database "postgres://postgres:postgres@localhost:5432/postgres?sslmode=disable" up
-$ !FIXME ДОБАВИТЬ ИНТ ТЕСТЫ
-$ go run cmd/server/main.go
-```
+
+### Остаток:
+1) Фильтры не работают
+2) Обработка ошибок + логи
+3) Обновление полей не работает
+4) Тесты на БД и Логику
+5) Документация, ее генерация
+6) Обертка в докер
+7) Нормально завершать работу БД
+
+### Стоит улучшить, доработать
+1) ```pkg/type/type.go``` - Поменять валидацию полей(усл.:backend_junior разбивать на 2 части, валидировать по отдельности)
+2) Доработать структуры ответов

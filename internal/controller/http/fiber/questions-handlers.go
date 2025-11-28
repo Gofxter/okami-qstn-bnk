@@ -37,7 +37,6 @@ func (ctrl *Controller) CreateQuestionsHandler(ctx *fiber.Ctx) error {
 		})
 	}
 
-	// !FIXME OPTION FIELD
 	if err := ctrl.questionSrv.CreateQuestion(context.Background(),
 		&dto.Question{Role: req.Role, Topic: req.Topic, Type: req.Type, Difficulty: req.Difficulty, Text: req.Text}); err != nil {
 		ctrl.logger.Debug("can`t to create question", zap.Error(err))
@@ -103,7 +102,7 @@ func (ctrl *Controller) GetQuestionsWithFiltersHandler(ctx *fiber.Ctx) error {
 		})
 	}
 
-	return ctx.JSON(result)
+	return ctx.JSON(models.GetQuestionsWithFiltersResponse{Result: result})
 }
 
 func (ctrl *Controller) UpdateQuestionHandler(ctx *fiber.Ctx) error {

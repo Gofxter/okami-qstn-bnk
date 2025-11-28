@@ -13,7 +13,7 @@ type (
 
 func ValidateRole(r ModelRole) error {
 	switch r {
-	case "fronted_junior":
+	case "frontend_junior":
 		return nil
 	case "backend_junior":
 		return nil

@@ -16,7 +16,7 @@ func TestRole(t *testing.T) {
 	}{
 		{
 			name:   "case without err",
-			role:   "fronted_junior",
+			role:   "frontend_junior",
 			result: nil,
 		},
 		{

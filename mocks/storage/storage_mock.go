@@ -10,6 +10,7 @@
 package mocks
 
 import (
+	context "context"
 	models "okami-qstn-bnk/internal/models/dto"
 	types "okami-qstn-bnk/internal/pkg/types"
 	reflect "reflect"
@@ -43,131 +44,133 @@ func (m *MockStorage) EXPECT() *MockStorageMockRecorder {
 }
 
 // CreateQuestion mocks base method.
-func (m *MockStorage) CreateQuestion(q models.Question) {
+func (m *MockStorage) CreateQuestion(ctx context.Context, q models.Question) {
 	m.ctrl.T.Helper()
-	m.ctrl.Call(m, "CreateQuestion", q)
+	m.ctrl.Call(m, "CreateQuestion", ctx, q)
 }
 
 // CreateQuestion indicates an expected call of CreateQuestion.
-func (mr *MockStorageMockRecorder) CreateQuestion(q any) *gomock.Call {
+func (mr *MockStorageMockRecorder) CreateQuestion(ctx, q any) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "CreateQuestion", reflect.TypeOf((*MockStorage)(nil).CreateQuestion), q)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "CreateQuestion", reflect.TypeOf((*MockStorage)(nil).CreateQuestion), ctx, q)
 }
 
 // CreateTemplate mocks base method.
-func (m *MockStorage) CreateTemplate(t models.TestTemplate) {
+func (m *MockStorage) CreateTemplate(ctx context.Context, t models.TestTemplate) {
 	m.ctrl.T.Helper()
-	m.ctrl.Call(m, "CreateTemplate", t)
+	m.ctrl.Call(m, "CreateTemplate", ctx, t)
 }
 
 // CreateTemplate indicates an expected call of CreateTemplate.
-func (mr *MockStorageMockRecorder) CreateTemplate(t any) *gomock.Call {
+func (mr *MockStorageMockRecorder) CreateTemplate(ctx, t any) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "CreateTemplate", reflect.TypeOf((*MockStorage)(nil).CreateTemplate), t)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "CreateTemplate", reflect.TypeOf((*MockStorage)(nil).CreateTemplate), ctx, t)
 }
 
 // DeleteQuestion mocks base method.
-func (m *MockStorage) DeleteQuestion(id uuid.UUID) {
+func (m *MockStorage) DeleteQuestion(ctx context.Context, id uuid.UUID) {
 	m.ctrl.T.Helper()
-	m.ctrl.Call(m, "DeleteQuestion", id)
+	m.ctrl.Call(m, "DeleteQuestion", ctx, id)
 }
 
 // DeleteQuestion indicates an expected call of DeleteQuestion.
-func (mr *MockStorageMockRecorder) DeleteQuestion(id any) *gomock.Call {
+func (mr *MockStorageMockRecorder) DeleteQuestion(ctx, id any) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "DeleteQuestion", reflect.TypeOf((*MockStorage)(nil).DeleteQuestion), id)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "DeleteQuestion", reflect.TypeOf((*MockStorage)(nil).DeleteQuestion), ctx, id)
 }
 
 // DeleteTemplate mocks base method.
-func (m *MockStorage) DeleteTemplate(id uuid.UUID) {
+func (m *MockStorage) DeleteTemplate(ctx context.Context, id uuid.UUID) {
 	m.ctrl.T.Helper()
-	m.ctrl.Call(m, "DeleteTemplate", id)
+	m.ctrl.Call(m, "DeleteTemplate", ctx, id)
 }
 
 // DeleteTemplate indicates an expected call of DeleteTemplate.
-func (mr *MockStorageMockRecorder) DeleteTemplate(id any) *gomock.Call {
+func (mr *MockStorageMockRecorder) DeleteTemplate(ctx, id any) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "DeleteTemplate", reflect.TypeOf((*MockStorage)(nil).DeleteTemplate), id)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "DeleteTemplate", reflect.TypeOf((*MockStorage)(nil).DeleteTemplate), ctx, id)
 }
 
 // GetQuestionByID mocks base method.
-func (m *MockStorage) GetQuestionByID(id uuid.UUID) models.Question {
+func (m *MockStorage) GetQuestionByID(ctx context.Context, id uuid.UUID) models.Question {
 	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "GetQuestionByID", id)
+	ret := m.ctrl.Call(m, "GetQuestionByID", ctx, id)
 	ret0, _ := ret[0].(models.Question)
 	return ret0
 }
 
 // GetQuestionByID indicates an expected call of GetQuestionByID.
-func (mr *MockStorageMockRecorder) GetQuestionByID(id any) *gomock.Call {
+func (mr *MockStorageMockRecorder) GetQuestionByID(ctx, id any) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetQuestionByID", reflect.TypeOf((*MockStorage)(nil).GetQuestionByID), id)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetQuestionByID", reflect.TypeOf((*MockStorage)(nil).GetQuestionByID), ctx, id)
 }
 
 // GetQuestionsCollectionWithFilters mocks base method.
-func (m *MockStorage) GetQuestionsCollectionWithFilters(role *types.ModelRole, topic *string, difficulty *int) []models.Question {
+func (m *MockStorage) GetQuestionsCollectionWithFilters(ctx context.Context, role *types.ModelRole, topic *string, difficulty *int) []models.Question {
 	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "GetQuestionsCollectionWithFilters", role, topic, difficulty)
+	ret := m.ctrl.Call(m, "GetQuestionsCollectionWithFilters", ctx, role, topic, difficulty)
 	ret0, _ := ret[0].([]models.Question)
 	return ret0
 }
 
 // GetQuestionsCollectionWithFilters indicates an expected call of GetQuestionsCollectionWithFilters.
-func (mr *MockStorageMockRecorder) GetQuestionsCollectionWithFilters(role, topic, difficulty any) *gomock.Call {
+func (mr *MockStorageMockRecorder) GetQuestionsCollectionWithFilters(ctx, role, topic, difficulty any) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetQuestionsCollectionWithFilters", reflect.TypeOf((*MockStorage)(nil).GetQuestionsCollectionWithFilters), role, topic, difficulty)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetQuestionsCollectionWithFilters", reflect.TypeOf((*MockStorage)(nil).GetQuestionsCollectionWithFilters), ctx, role, topic, difficulty)
 }
 
 // GetTemplateById mocks base method.
-func (m *MockStorage) GetTemplateById(id uuid.UUID) models.TestTemplate {
+func (m *MockStorage) GetTemplateById(ctx context.Context, id uuid.UUID) models.TestTemplate {
 	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "GetTemplateById", id)
+	ret := m.ctrl.Call(m, "GetTemplateById", ctx, id)
 	ret0, _ := ret[0].(models.TestTemplate)
 	return ret0
 }
 
 // GetTemplateById indicates an expected call of GetTemplateById.
-func (mr *MockStorageMockRecorder) GetTemplateById(id any) *gomock.Call {
+func (mr *MockStorageMockRecorder) GetTemplateById(ctx, id any) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetTemplateById", reflect.TypeOf((*MockStorage)(nil).GetTemplateById), id)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetTemplateById", reflect.TypeOf((*MockStorage)(nil).GetTemplateById), ctx, id)
 }
 
 // GetTemplatesCollectionWithFilters mocks base method.
-func (m *MockStorage) GetTemplatesCollectionWithFilters(role *types.ModelRole, purpose *types.ModelPurpose) {
+func (m *MockStorage) GetTemplatesCollectionWithFilters(ctx context.Context, role *types.ModelRole, purpose *types.ModelPurpose) []models.TestTemplate {
 	m.ctrl.T.Helper()
-	m.ctrl.Call(m, "GetTemplatesCollectionWithFilters", role, purpose)
+	ret := m.ctrl.Call(m, "GetTemplatesCollectionWithFilters", ctx, role, purpose)
+	ret0, _ := ret[0].([]models.TestTemplate)
+	return ret0
 }
 
 // GetTemplatesCollectionWithFilters indicates an expected call of GetTemplatesCollectionWithFilters.
-func (mr *MockStorageMockRecorder) GetTemplatesCollectionWithFilters(role, purpose any) *gomock.Call {
+func (mr *MockStorageMockRecorder) GetTemplatesCollectionWithFilters(ctx, role, purpose any) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetTemplatesCollectionWithFilters", reflect.TypeOf((*MockStorage)(nil).GetTemplatesCollectionWithFilters), role, purpose)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetTemplatesCollectionWithFilters", reflect.TypeOf((*MockStorage)(nil).GetTemplatesCollectionWithFilters), ctx, role, purpose)
 }
 
 // UpdateQuestion mocks base method.
-func (m *MockStorage) UpdateQuestion(q models.Question) models.Question {
+func (m *MockStorage) UpdateQuestion(ctx context.Context, q models.Question) models.Question {
 	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "UpdateQuestion", q)
+	ret := m.ctrl.Call(m, "UpdateQuestion", ctx, q)
 	ret0, _ := ret[0].(models.Question)
 	return ret0
 }
 
 // UpdateQuestion indicates an expected call of UpdateQuestion.
-func (mr *MockStorageMockRecorder) UpdateQuestion(q any) *gomock.Call {
+func (mr *MockStorageMockRecorder) UpdateQuestion(ctx, q any) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "UpdateQuestion", reflect.TypeOf((*MockStorage)(nil).UpdateQuestion), q)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "UpdateQuestion", reflect.TypeOf((*MockStorage)(nil).UpdateQuestion), ctx, q)
 }
 
 // UpdateTemplate mocks base method.
-func (m *MockStorage) UpdateTemplate(t models.TestTemplate) models.TestTemplate {
+func (m *MockStorage) UpdateTemplate(ctx context.Context, t models.TestTemplate) models.TestTemplate {
 	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "UpdateTemplate", t)
+	ret := m.ctrl.Call(m, "UpdateTemplate", ctx, t)
 	ret0, _ := ret[0].(models.TestTemplate)
 	return ret0
 }
 
 // UpdateTemplate indicates an expected call of UpdateTemplate.
-func (mr *MockStorageMockRecorder) UpdateTemplate(t any) *gomock.Call {
+func (mr *MockStorageMockRecorder) UpdateTemplate(ctx, t any) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "UpdateTemplate", reflect.TypeOf((*MockStorage)(nil).UpdateTemplate), t)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "UpdateTemplate", reflect.TypeOf((*MockStorage)(nil).UpdateTemplate), ctx, t)
 }

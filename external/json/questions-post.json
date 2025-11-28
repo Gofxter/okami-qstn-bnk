@@ -1,0 +1,51 @@
+{
+  "with 1 option": {
+    "role": "backend_junior",
+    "topic": "golang",
+    "type": "single_choice",
+    "options": [
+      {
+        "text": "тоннель для общения горутин",
+        "is_correct": true
+      },
+      {
+        "text": "хрень, не использую",
+        "is_correct": false
+      }
+    ],
+    "difficulty": 2,
+    "text": "Что такое канал?"
+  },
+
+  "with 2 options": {
+    "role": "backend_junior",
+    "topic": "golang",
+    "type": "multi_choice",
+    "options": [
+      {
+        "text": "тоннель для общения горутин",
+        "is_correct": true
+      },
+      {
+        "text": "тоннель для общения горутин",
+        "is_correct": true
+      },
+      {
+        "text": "хрень, не использую",
+        "is_correct": false
+      }
+    ],
+    "difficulty": 2,
+    "text": "Что такое канал?"
+  },
+
+  "without options": {
+    "role": "backend_junior",
+    "topic": "golang",
+    "type": "text",
+    "difficulty": 2,
+    "text": "Что такое канал?"
+  }
+
+}
+

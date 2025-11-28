@@ -19,176 +19,6 @@ import (
 	gomock "go.uber.org/mock/gomock"
 )
 
-// MockService is a mock of Service interface.
-type MockService struct {
-	ctrl     *gomock.Controller
-	recorder *MockServiceMockRecorder
-	isgomock struct{}
-}
-
-// MockServiceMockRecorder is the mock recorder for MockService.
-type MockServiceMockRecorder struct {
-	mock *MockService
-}
-
-// NewMockService creates a new mock instance.
-func NewMockService(ctrl *gomock.Controller) *MockService {
-	mock := &MockService{ctrl: ctrl}
-	mock.recorder = &MockServiceMockRecorder{mock}
-	return mock
-}
-
-// EXPECT returns an object that allows the caller to indicate expected use.
-func (m *MockService) EXPECT() *MockServiceMockRecorder {
-	return m.recorder
-}
-
-// CreateQuestion mocks base method.
-func (m *MockService) CreateQuestion(ctx context.Context, question *models.Question) error {
-	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "CreateQuestion", ctx, question)
-	ret0, _ := ret[0].(error)
-	return ret0
-}
-
-// CreateQuestion indicates an expected call of CreateQuestion.
-func (mr *MockServiceMockRecorder) CreateQuestion(ctx, question any) *gomock.Call {
-	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "CreateQuestion", reflect.TypeOf((*MockService)(nil).CreateQuestion), ctx, question)
-}
-
-// CreateTemplate mocks base method.
-func (m *MockService) CreateTemplate(ctx context.Context, template *models.TestTemplate) error {
-	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "CreateTemplate", ctx, template)
-	ret0, _ := ret[0].(error)
-	return ret0
-}
-
-// CreateTemplate indicates an expected call of CreateTemplate.
-func (mr *MockServiceMockRecorder) CreateTemplate(ctx, template any) *gomock.Call {
-	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "CreateTemplate", reflect.TypeOf((*MockService)(nil).CreateTemplate), ctx, template)
-}
-
-// DeleteQuestion mocks base method.
-func (m *MockService) DeleteQuestion(ctx context.Context, id uuid.UUID) error {
-	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "DeleteQuestion", ctx, id)
-	ret0, _ := ret[0].(error)
-	return ret0
-}
-
-// DeleteQuestion indicates an expected call of DeleteQuestion.
-func (mr *MockServiceMockRecorder) DeleteQuestion(ctx, id any) *gomock.Call {
-	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "DeleteQuestion", reflect.TypeOf((*MockService)(nil).DeleteQuestion), ctx, id)
-}
-
-// DeleteTemplate mocks base method.
-func (m *MockService) DeleteTemplate(ctx context.Context, id uuid.UUID) error {
-	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "DeleteTemplate", ctx, id)
-	ret0, _ := ret[0].(error)
-	return ret0
-}
-
-// DeleteTemplate indicates an expected call of DeleteTemplate.
-func (mr *MockServiceMockRecorder) DeleteTemplate(ctx, id any) *gomock.Call {
-	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "DeleteTemplate", reflect.TypeOf((*MockService)(nil).DeleteTemplate), ctx, id)
-}
-
-// GetQuestion mocks base method.
-func (m *MockService) GetQuestion(ctx context.Context, id uuid.UUID) (*models.Question, error) {
-	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "GetQuestion", ctx, id)
-	ret0, _ := ret[0].(*models.Question)
-	ret1, _ := ret[1].(error)
-	return ret0, ret1
-}
-
-// GetQuestion indicates an expected call of GetQuestion.
-func (mr *MockServiceMockRecorder) GetQuestion(ctx, id any) *gomock.Call {
-	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetQuestion", reflect.TypeOf((*MockService)(nil).GetQuestion), ctx, id)
-}
-
-// GetQuestionsCollectionWithFilters mocks base method.
-func (m *MockService) GetQuestionsCollectionWithFilters(ctx context.Context, role *types.ModelRole, topic *string, difficulty *int) ([]*models.Question, error) {
-	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "GetQuestionsCollectionWithFilters", ctx, role, topic, difficulty)
-	ret0, _ := ret[0].([]*models.Question)
-	ret1, _ := ret[1].(error)
-	return ret0, ret1
-}
-
-// GetQuestionsCollectionWithFilters indicates an expected call of GetQuestionsCollectionWithFilters.
-func (mr *MockServiceMockRecorder) GetQuestionsCollectionWithFilters(ctx, role, topic, difficulty any) *gomock.Call {
-	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetQuestionsCollectionWithFilters", reflect.TypeOf((*MockService)(nil).GetQuestionsCollectionWithFilters), ctx, role, topic, difficulty)
-}
-
-// GetTemplate mocks base method.
-func (m *MockService) GetTemplate(ctx context.Context, id uuid.UUID) (*models.TestTemplate, error) {
-	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "GetTemplate", ctx, id)
-	ret0, _ := ret[0].(*models.TestTemplate)
-	ret1, _ := ret[1].(error)
-	return ret0, ret1
-}
-
-// GetTemplate indicates an expected call of GetTemplate.
-func (mr *MockServiceMockRecorder) GetTemplate(ctx, id any) *gomock.Call {
-	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetTemplate", reflect.TypeOf((*MockService)(nil).GetTemplate), ctx, id)
-}
-
-// GetTemplatesCollectionWithFilters mocks base method.
-func (m *MockService) GetTemplatesCollectionWithFilters(ctx context.Context, role *types.ModelRole, purpose *types.ModelPurpose) ([]*models.TestTemplate, error) {
-	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "GetTemplatesCollectionWithFilters", ctx, role, purpose)
-	ret0, _ := ret[0].([]*models.TestTemplate)
-	ret1, _ := ret[1].(error)
-	return ret0, ret1
-}
-
-// GetTemplatesCollectionWithFilters indicates an expected call of GetTemplatesCollectionWithFilters.
-func (mr *MockServiceMockRecorder) GetTemplatesCollectionWithFilters(ctx, role, purpose any) *gomock.Call {
-	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetTemplatesCollectionWithFilters", reflect.TypeOf((*MockService)(nil).GetTemplatesCollectionWithFilters), ctx, role, purpose)
-}
-
-// UpdateQuestion mocks base method.
-func (m *MockService) UpdateQuestion(ctx context.Context, question *models.Question) (*models.Question, error) {
-	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "UpdateQuestion", ctx, question)
-	ret0, _ := ret[0].(*models.Question)
-	ret1, _ := ret[1].(error)
-	return ret0, ret1
-}
-
-// UpdateQuestion indicates an expected call of UpdateQuestion.
-func (mr *MockServiceMockRecorder) UpdateQuestion(ctx, question any) *gomock.Call {
-	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "UpdateQuestion", reflect.TypeOf((*MockService)(nil).UpdateQuestion), ctx, question)
-}
-
-// UpdateTemplate mocks base method.
-func (m *MockService) UpdateTemplate(ctx context.Context, template *models.TestTemplate) (*models.TestTemplate, error) {
-	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "UpdateTemplate", ctx, template)
-	ret0, _ := ret[0].(*models.TestTemplate)
-	ret1, _ := ret[1].(error)
-	return ret0, ret1
-}
-
-// UpdateTemplate indicates an expected call of UpdateTemplate.
-func (mr *MockServiceMockRecorder) UpdateTemplate(ctx, template any) *gomock.Call {
-	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "UpdateTemplate", reflect.TypeOf((*MockService)(nil).UpdateTemplate), ctx, template)
-}
-
 // MockQuestions is a mock of Questions interface.
 type MockQuestions struct {
 	ctrl     *gomock.Controller
@@ -257,10 +87,10 @@ func (mr *MockQuestionsMockRecorder) GetQuestion(ctx, id any) *gomock.Call {
 }
 
 // GetQuestionsCollectionWithFilters mocks base method.
-func (m *MockQuestions) GetQuestionsCollectionWithFilters(ctx context.Context, role *types.ModelRole, topic *string, difficulty *int) ([]*models.Question, error) {
+func (m *MockQuestions) GetQuestionsCollectionWithFilters(ctx context.Context, role *types.ModelRole, topic *string, difficulty *int) ([]models.Question, error) {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "GetQuestionsCollectionWithFilters", ctx, role, topic, difficulty)
-	ret0, _ := ret[0].([]*models.Question)
+	ret0, _ := ret[0].([]models.Question)
 	ret1, _ := ret[1].(error)
 	return ret0, ret1
 }
@@ -272,10 +102,10 @@ func (mr *MockQuestionsMockRecorder) GetQuestionsCollectionWithFilters(ctx, role
 }
 
 // UpdateQuestion mocks base method.
-func (m *MockQuestions) UpdateQuestion(ctx context.Context, question *models.Question) (*models.Question, error) {
+func (m *MockQuestions) UpdateQuestion(ctx context.Context, question *models.Question) (models.Question, error) {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "UpdateQuestion", ctx, question)
-	ret0, _ := ret[0].(*models.Question)
+	ret0, _ := ret[0].(models.Question)
 	ret1, _ := ret[1].(error)
 	return ret0, ret1
 }
@@ -354,10 +184,10 @@ func (mr *MockTemplatesMockRecorder) GetTemplate(ctx, id any) *gomock.Call {
 }
 
 // GetTemplatesCollectionWithFilters mocks base method.
-func (m *MockTemplates) GetTemplatesCollectionWithFilters(ctx context.Context, role *types.ModelRole, purpose *types.ModelPurpose) ([]*models.TestTemplate, error) {
+func (m *MockTemplates) GetTemplatesCollectionWithFilters(ctx context.Context, role *types.ModelRole, purpose *types.ModelPurpose) ([]models.TestTemplate, error) {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "GetTemplatesCollectionWithFilters", ctx, role, purpose)
-	ret0, _ := ret[0].([]*models.TestTemplate)
+	ret0, _ := ret[0].([]models.TestTemplate)
 	ret1, _ := ret[1].(error)
 	return ret0, ret1
 }
