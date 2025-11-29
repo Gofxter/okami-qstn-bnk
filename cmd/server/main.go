@@ -26,9 +26,9 @@ func main() {
 
 	logger.Info(fmt.Sprintf("successfully connected to storage"))
 
-	questionSrv, templatesSrv := service.RegisterServices(logger, storage)
+	srv := service.RegisterServices(logger, storage)
 	wApp := fiber.New()
-	ctrl := controller.NewController(logger, questionSrv, templatesSrv, wApp)
+	ctrl := controller.NewController(logger, srv, wApp)
 	ctrl.ConfigureRoutes()
 	logger.Info(fmt.Sprintf("successfully configured routes"))
 

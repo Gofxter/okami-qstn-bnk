@@ -11,6 +11,7 @@ import (
 )
 
 func (ctrl *Controller) CreateQuestionsHandler(ctx *fiber.Ctx) error {
+	var optionsPtr *[]dto.Option
 	var req models.CreateQuestionRequest
 
 	if err := ctx.BodyParser(&req); err != nil {
@@ -37,8 +38,28 @@ func (ctrl *Controller) CreateQuestionsHandler(ctx *fiber.Ctx) error {
 		})
 	}
 
-	if err := ctrl.questionSrv.CreateQuestion(context.Background(),
-		&dto.Question{Role: req.Role, Topic: req.Topic, Type: req.Type, Difficulty: req.Difficulty, Text: req.Text}); err != nil {
+	if req.Options != nil {
+		options := make([]dto.Option, len(*req.Options))
+		for i, opt := range *req.Options {
+			options[i] = dto.Option{
+				Text:      opt.Text,
+				IsCorrect: opt.IsCorrect,
+			}
+		}
+
+		optionsPtr = &options
+	}
+
+	if err := ctrl.srv.CreateQuestion(context.Background(),
+		&dto.Question{
+			Role:       req.Role,
+			Topic:      req.Topic,
+			Type:       req.Type,
+			Difficulty: req.Difficulty,
+			Text:       req.Text,
+		},
+		optionsPtr,
+	); err != nil {
 		ctrl.logger.Debug("can`t to create question", zap.Error(err))
 		return ctx.JSON(models.ErrorResponse{
 			Message:   "can`t to create question",
@@ -60,7 +81,7 @@ func (ctrl *Controller) GetQuestionByIDHandler(ctx *fiber.Ctx) error {
 		})
 	}
 
-	result, err := ctrl.questionSrv.GetQuestion(context.Background(), unmarshalId)
+	result, err := ctrl.srv.GetQuestion(context.Background(), unmarshalId)
 	if err != nil {
 		ctrl.logger.Debug("can`t to get question", zap.Error(err))
 		return ctx.JSON(models.ErrorResponse{
@@ -93,7 +114,7 @@ func (ctrl *Controller) GetQuestionsWithFiltersHandler(ctx *fiber.Ctx) error {
 		}
 	}
 
-	result, err := ctrl.questionSrv.GetQuestionsCollectionWithFilters(context.Background(), query.Role, query.Topic, query.Difficulty)
+	result, err := ctrl.srv.GetQuestionsCollectionWithFilters(context.Background(), query.Role, query.Topic, query.Difficulty)
 	if err != nil {
 		ctrl.logger.Debug("can`t to get questions", zap.Error(err))
 		return ctx.JSON(models.ErrorResponse{
@@ -126,7 +147,7 @@ func (ctrl *Controller) UpdateQuestionHandler(ctx *fiber.Ctx) error {
 		}
 	}
 
-	result, err := ctrl.questionSrv.UpdateQuestion(context.Background(), &dto.Question{Role: *req.Role, Topic: *req.Topic, Difficulty: *req.Difficulty, Text: *req.Text})
+	result, err := ctrl.srv.UpdateQuestion(context.Background(), &dto.Question{Role: *req.Role, Topic: *req.Topic, Difficulty: *req.Difficulty, Text: *req.Text})
 	if err != nil {
 		ctrl.logger.Debug("can`t to update question", zap.Error(err))
 		return ctx.JSON(models.ErrorResponse{
@@ -149,7 +170,7 @@ func (ctrl *Controller) DeleteQuestionHandler(ctx *fiber.Ctx) error {
 		})
 	}
 
-	if err := ctrl.questionSrv.DeleteQuestion(context.Background(), unmarshalId); err != nil {
+	if err := ctrl.srv.DeleteQuestion(context.Background(), unmarshalId); err != nil {
 		ctrl.logger.Debug("can`t to delete question", zap.Error(err))
 		return ctx.JSON(models.ErrorResponse{
 			Message:   "can`t to delete question",

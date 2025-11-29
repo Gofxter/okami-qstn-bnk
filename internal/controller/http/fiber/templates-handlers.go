@@ -37,7 +37,7 @@ func (ctrl *Controller) CreateTemplateHandler(ctx *fiber.Ctx) error {
 		})
 	}
 
-	if err := ctrl.templateSrv.CreateTemplate(context.Background(),
+	if err := ctrl.srv.CreateTemplate(context.Background(),
 		&dto.TestTemplate{Role: req.Role, Purpose: req.Purpose}); err != nil {
 		ctrl.logger.Error("can`t create template")
 		return ctx.JSON(models.ErrorResponse{
@@ -60,7 +60,7 @@ func (ctrl *Controller) GetTemplateByIDHandler(ctx *fiber.Ctx) error {
 		})
 	}
 
-	result, err := ctrl.templateSrv.GetTemplate(context.Background(), unmarshalId)
+	result, err := ctrl.srv.GetTemplate(context.Background(), unmarshalId)
 	if err != nil {
 		ctrl.logger.Debug("can`t to get template", zap.Error(err))
 		return ctx.JSON(models.ErrorResponse{
@@ -103,7 +103,7 @@ func (ctrl *Controller) GetTemplatesWithFiltersHandler(ctx *fiber.Ctx) error {
 		}
 	}
 
-	result, err := ctrl.templateSrv.GetTemplatesCollectionWithFilters(context.Background(), query.Role, query.Purpose)
+	result, err := ctrl.srv.GetTemplatesCollectionWithFilters(context.Background(), query.Role, query.Purpose)
 	if err != nil {
 		ctrl.logger.Debug("can`t to get templates", zap.Error(err))
 		return ctx.JSON(models.ErrorResponse{
@@ -146,7 +146,7 @@ func (ctrl *Controller) UpdateTemplateHandler(ctx *fiber.Ctx) error {
 		}
 	}
 
-	result, err := ctrl.templateSrv.UpdateTemplate(context.Background(),
+	result, err := ctrl.srv.UpdateTemplate(context.Background(),
 		&dto.TestTemplate{Role: *req.Role, Purpose: *req.Purpose})
 	if err != nil {
 		ctrl.logger.Debug("can`t to update template", zap.Error(err))
@@ -170,7 +170,7 @@ func (ctrl *Controller) DeleteTemplateHandler(ctx *fiber.Ctx) error {
 		})
 	}
 
-	if err := ctrl.templateSrv.DeleteTemplate(context.Background(), unmarshalId); err != nil {
+	if err := ctrl.srv.DeleteTemplate(context.Background(), unmarshalId); err != nil {
 		ctrl.logger.Debug("can`t to delete template", zap.Error(err))
 		return ctx.JSON(models.ErrorResponse{
 			Message:   "can`t to delete template",

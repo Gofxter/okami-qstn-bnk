@@ -6,23 +6,15 @@ import (
 	"go.uber.org/zap"
 	models "okami-qstn-bnk/internal/models/dto"
 	"okami-qstn-bnk/internal/pkg/types"
-	"okami-qstn-bnk/internal/service/questions"
-	"okami-qstn-bnk/internal/service/templates"
 	"okami-qstn-bnk/internal/storage"
 )
 
-var _ Questions = (*questions.Question)(nil)
-var _ Templates = (*templates.Template)(nil)
-
-type Questions interface {
-	CreateQuestion(ctx context.Context, question *models.Question) error
+type Service interface {
+	CreateQuestion(ctx context.Context, question *models.Question, options *[]models.Option) error
 	GetQuestion(ctx context.Context, id uuid.UUID) (*models.Question, error)
 	GetQuestionsCollectionWithFilters(ctx context.Context, role *types.ModelRole, topic *string, difficulty *int) ([]models.Question, error)
 	UpdateQuestion(ctx context.Context, question *models.Question) (*models.Question, error)
 	DeleteQuestion(ctx context.Context, id uuid.UUID) error
-}
-
-type Templates interface {
 	CreateTemplate(ctx context.Context, template *models.TestTemplate) error
 	GetTemplate(ctx context.Context, id uuid.UUID) (*models.TestTemplate, error)
 	GetTemplatesCollectionWithFilters(ctx context.Context, role *types.ModelRole, purpose *types.ModelPurpose) ([]models.TestTemplate, error)
@@ -30,12 +22,9 @@ type Templates interface {
 	DeleteTemplate(ctx context.Context, id uuid.UUID) error
 }
 
-func RegisterServices(logger *zap.Logger, storage storage.Storage) (*questions.Question, *templates.Template) {
-	return &questions.Question{
-			Logger:  logger,
-			Storage: storage,
-		}, &templates.Template{
-			Logger:  logger,
-			Storage: storage,
-		}
+func RegisterServices(logger *zap.Logger, storage storage.Storage) *QstnBnk {
+	return &QstnBnk{
+		Logger:  logger,
+		Storage: storage,
+	}
 }

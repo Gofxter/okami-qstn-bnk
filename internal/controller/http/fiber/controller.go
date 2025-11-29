@@ -7,18 +7,16 @@ import (
 )
 
 type Controller struct {
-	questionSrv service.Questions
-	templateSrv service.Templates
-	app         *fiber.App
-	logger      *zap.Logger
+	srv    service.Service
+	app    *fiber.App
+	logger *zap.Logger
 }
 
-func NewController(logger *zap.Logger, qsrv service.Questions, tsrv service.Templates, fiber *fiber.App) *Controller {
+func NewController(logger *zap.Logger, srv service.Service, fiber *fiber.App) *Controller {
 	return &Controller{
-		questionSrv: qsrv,
-		templateSrv: tsrv,
-		logger:      logger,
-		app:         fiber,
+		srv:    srv,
+		logger: logger,
+		app:    fiber,
 	}
 }
 
@@ -42,5 +40,7 @@ func (ctrl *Controller) ConfigureRoutes() {
 			templates.Put(":id", ctrl.UpdateTemplateHandler)
 			templates.Delete(":id", ctrl.DeleteTemplateHandler)
 		}
+
+		questionBank.Post("tests/instantiate", ctrl.BaseHandler)
 	}
 }

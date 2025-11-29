@@ -2,6 +2,7 @@ package gorm
 
 import (
 	"context"
+	"errors"
 	"github.com/google/uuid"
 	"go.uber.org/zap"
 	"gorm.io/driver/postgres"
@@ -29,62 +30,197 @@ func NewStorage(logger *zap.Logger, path string) *Gorm {
 	}
 }
 
-func (g *Gorm) CreateQuestion(ctx context.Context, q models.Question) {
-	g.db.WithContext(ctx).Create(&q)
+func (g *Gorm) CreateQuestion(ctx context.Context, q *models.Question, options *[]models.Option) error {
+	if err := g.db.WithContext(ctx).Create(&q).Error; err != nil {
+		g.logger.Error("Failed to create question", zap.Error(err))
+		return err
+	}
+
+	if options != nil {
+		for index := range *options {
+			(*options)[index].Id = uuid.New()
+			(*options)[index].QuestionId = q.Id
+
+			if err := g.db.WithContext(ctx).Create(&(*options)[index]).Error; err != nil {
+				g.logger.Error("Failed to create option", zap.Error(err))
+				return err
+			}
+		}
+	}
+
+	return nil
 }
 
-func (g *Gorm) GetQuestionById(ctx context.Context, id uuid.UUID) models.Question {
+func (g *Gorm) GetQuestionById(ctx context.Context, id uuid.UUID) (*models.Question, error) {
 	var q models.Question
-	g.db.WithContext(ctx).Take(&q).Where("id = ?", id)
-	return q
+
+	if err := g.db.WithContext(ctx).Where("id = ?", id).First(&q).Error; err != nil {
+		if errors.Is(err, gorm.ErrRecordNotFound) {
+			g.logger.Warn("Question not found", zap.String("id", id.String()))
+			return nil, errors.New("question not found")
+		}
+
+		g.logger.Error("Failed to get question by id", zap.Error(err))
+		return nil, err
+	}
+
+	return &q, nil
 }
 
-func (g *Gorm) GetQuestionsCollectionWithFilters(ctx context.Context, role *types.ModelRole, topic *string, difficulty *int) []models.Question {
+func (g *Gorm) GetQuestionsCollectionWithFilters(ctx context.Context, role *types.ModelRole, topic *string, difficulty *int) ([]models.Question, error) {
 	var qs []models.Question
-	g.db.WithContext(ctx).Find(&qs).Where("role = ?, topic = ?, difficulty = ?", role, topic, difficulty)
 
-	return qs
+	query := g.db.WithContext(ctx).Model(&models.Question{})
+
+	if role != nil {
+		query = query.Where("role = ?", *role)
+	}
+	if topic != nil {
+		query = query.Where("topic = ?", *topic)
+	}
+	if difficulty != nil {
+		query = query.Where("difficulty = ?", *difficulty)
+	}
+
+	err := query.Find(&qs).Error
+	if err != nil {
+		g.logger.Error("Failed to get questions with filters", zap.Error(err))
+		return nil, err
+	}
+
+	return qs, nil
 }
 
-func (g *Gorm) UpdateQuestion(ctx context.Context, q models.Question) models.Question {
-	var result models.Question
-	g.db.WithContext(ctx).Model(result).Updates(q)
+func (g *Gorm) UpdateQuestion(ctx context.Context, q models.Question) (models.Question, error) {
+	result := g.db.WithContext(ctx).Model(&models.Question{}).Where("id = ?", q.Id).Updates(q)
+	if result.Error != nil {
+		if errors.Is(result.Error, gorm.ErrRecordNotFound) {
+			g.logger.Warn("Question not found", zap.Any("id", q.Id))
+			return models.Question{}, errors.New("question not found")
+		}
 
-	g.db.WithContext(ctx).Take(&result)
-	return result
+		g.logger.Error("Failed to update question", zap.Error(result.Error))
+		return models.Question{}, result.Error
+	}
+
+	var updatedTemplate models.Question
+	err := g.db.WithContext(ctx).Where("id = ?", q.Id).First(&updatedTemplate).Error
+	if err != nil {
+		g.logger.Error("Failed to fetch question", zap.Error(err))
+		return models.Question{}, err
+	}
+
+	return updatedTemplate, nil
 }
 
-func (g *Gorm) DeleteQuestion(ctx context.Context, id uuid.UUID) {
-	g.db.WithContext(ctx).Delete(&models.Question{}, id)
+func (g *Gorm) DeleteQuestion(ctx context.Context, id uuid.UUID) error {
+	question := g.db.WithContext(ctx).Delete(&models.Question{}, id)
+	if question.Error != nil {
+		if errors.Is(question.Error, gorm.ErrRecordNotFound) {
+			g.logger.Warn("Question not found", zap.String("id", id.String()))
+			return errors.New("question not found")
+		}
+
+		g.logger.Error("Failed to delete question", zap.Error(question.Error))
+		return question.Error
+	}
+
+	option := g.db.WithContext(ctx).Delete(&models.Option{}, id)
+	if option.Error != nil {
+		if errors.Is(option.Error, gorm.ErrRecordNotFound) {
+			g.logger.Warn("Question not found", zap.String("id", id.String()))
+			return errors.New("questions option not found")
+		}
+
+		g.logger.Error("Failed to delete questions option", zap.Error(option.Error))
+		return option.Error
+	}
+
+	return nil
 }
 
-func (g *Gorm) CreateTemplate(ctx context.Context, t models.TestTemplate) {
-	g.db.WithContext(ctx).Create(&t)
+func (g *Gorm) CreateTemplate(ctx context.Context, t models.TestTemplate) error {
+	if err := g.db.WithContext(ctx).Create(&t).Error; err != nil {
+		g.logger.Error("Failed to create question", zap.Error(err))
+		return err
+	}
+	return nil
 }
 
-func (g *Gorm) GetTemplateById(ctx context.Context, id uuid.UUID) models.TestTemplate {
+func (g *Gorm) GetTemplateById(ctx context.Context, id uuid.UUID) (*models.TestTemplate, error) {
 	var t models.TestTemplate
-	g.db.WithContext(ctx).First(&t).Where("id = ?", id)
-	return t
+
+	if err := g.db.WithContext(ctx).Where("id = ?", id).First(&t).Error; err != nil {
+		if errors.Is(err, gorm.ErrRecordNotFound) {
+			g.logger.Warn("Template not found", zap.String("id", id.String()))
+			return nil, errors.New("template not found")
+		}
+
+		g.logger.Error("Failed to get template by id", zap.Error(err))
+		return nil, err
+	}
+
+	return &t, nil
 }
 
-func (g *Gorm) GetTemplatesCollectionWithFilters(ctx context.Context, role *types.ModelRole, purpose *types.ModelPurpose) []models.TestTemplate {
+func (g *Gorm) GetTemplatesCollectionWithFilters(ctx context.Context, role *types.ModelRole, purpose *types.ModelPurpose) ([]models.TestTemplate, error) {
 	var qs []models.TestTemplate
-	g.db.WithContext(ctx).Find(&qs).Where("role = ?, purpose = ?", role, purpose)
 
-	return qs
+	query := g.db.WithContext(ctx).Model(&models.Question{})
+
+	if role != nil {
+		query = query.Where("role = ?", *role)
+	}
+
+	if purpose != nil {
+		query = query.Where("topic = ?", *purpose)
+	}
+
+	err := query.Find(&qs).Error
+	if err != nil {
+		g.logger.Error("Failed to get templates with filters", zap.Error(err))
+		return nil, err
+	}
+
+	return qs, nil
 }
 
-func (g *Gorm) UpdateTemplate(ctx context.Context, t models.TestTemplate) models.TestTemplate {
-	var result models.TestTemplate
-	g.db.WithContext(ctx).Model(result).Where("id = ?", t.Id).Updates(t)
+func (g *Gorm) UpdateTemplate(ctx context.Context, t models.TestTemplate) (models.TestTemplate, error) {
+	result := g.db.WithContext(ctx).Model(&models.TestTemplate{}).Where("id = ?", t.Id).Updates(t)
+	if result.Error != nil {
+		if errors.Is(result.Error, gorm.ErrRecordNotFound) {
+			g.logger.Warn("Template not found", zap.Any("id", t.Id))
+			return models.TestTemplate{}, errors.New("template not found")
+		}
 
-	g.db.WithContext(ctx).Take(&result)
-	return result
+		g.logger.Error("Failed to update template", zap.Error(result.Error))
+		return models.TestTemplate{}, result.Error
+	}
+
+	var updatedTemplate models.TestTemplate
+	err := g.db.WithContext(ctx).Where("id = ?", t.Id).First(&updatedTemplate).Error
+	if err != nil {
+		g.logger.Error("Failed to fetch updated template", zap.Error(err))
+		return models.TestTemplate{}, err
+	}
+
+	return updatedTemplate, nil
 
 }
-func (g *Gorm) DeleteTemplate(ctx context.Context, id uuid.UUID) {
-	g.db.WithContext(ctx).Delete(&models.TestTemplate{}, id)
+
+func (g *Gorm) DeleteTemplate(ctx context.Context, id uuid.UUID) error {
+	result := g.db.WithContext(ctx).Delete(&models.TestTemplate{}, id)
+	if result.Error != nil {
+		if errors.Is(result.Error, gorm.ErrRecordNotFound) {
+			g.logger.Warn("Template not found", zap.String("id", id.String()))
+			return errors.New("template not found")
+		}
+
+		g.logger.Error("Failed to delete template", zap.Error(result.Error))
+		return result.Error
+	}
+
+	return nil
 }
 
 func (g *Gorm) Ping(ctx context.Context) error {
