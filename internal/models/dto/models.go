@@ -20,6 +20,8 @@ type (
 		QuestionId uuid.UUID `json:"question_id" gorm:"type:uuid;not null;references:CompanyRefer"`
 		Text       string    `json:"text" gorm:"type:text;not null"`
 		IsCorrect  bool      `json:"is_correct" gorm:"type:boolean;not null"`
+
+		Owner Question `gorm:"foreignKey:QuestionId;references:Id"`
 	}
 )
 

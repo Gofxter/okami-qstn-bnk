@@ -1,4 +1,4 @@
-package controller
+package fiber
 
 import (
 	"context"
@@ -116,7 +116,16 @@ func (ctrl *Controller) GetTemplatesWithFiltersHandler(ctx *fiber.Ctx) error {
 }
 
 func (ctrl *Controller) UpdateTemplateHandler(ctx *fiber.Ctx) error {
-	req := models.UpdateTemplateRequest{Name: nil, Role: nil, Purpose: nil}
+	var req models.UpdateTemplateRequest
+	id := ctx.Params("id", "")
+	unmarshalId, err := uuid.Parse(id)
+	if err != nil {
+		ctrl.logger.Debug("can`t to parse id request", zap.Error(err))
+		return ctx.JSON(models.ErrorResponse{
+			Message:   "invalid id",
+			ErrorCode: fiber.StatusBadRequest,
+		})
+	}
 
 	if err := ctx.BodyParser(&req); err != nil {
 		ctrl.logger.Debug("can`t to parse body requests", zap.Any("body", req), zap.Error(err))
@@ -126,28 +135,24 @@ func (ctrl *Controller) UpdateTemplateHandler(ctx *fiber.Ctx) error {
 		})
 	}
 
-	if req.Role != nil {
-		if err := types.ValidateRole(*req.Role); err != nil {
-			ctrl.logger.Debug("can`t to validate role")
-			return ctx.JSON(models.ErrorResponse{
-				Message:   "invalid role",
-				ErrorCode: fiber.StatusBadRequest,
-			})
-		}
+	if err := types.ValidateRole(req.Role); err != nil {
+		ctrl.logger.Debug("can`t to validate role")
+		return ctx.JSON(models.ErrorResponse{
+			Message:   "invalid role",
+			ErrorCode: fiber.StatusBadRequest,
+		})
 	}
 
-	if req.Purpose != nil {
-		if err := types.ValidatePurpose(*req.Purpose); err != nil {
-			ctrl.logger.Debug("can`t to validate purpose", zap.Error(err))
-			return ctx.JSON(models.ErrorResponse{
-				Message:   "invalid purpose",
-				ErrorCode: fiber.StatusBadRequest,
-			})
-		}
+	if err := types.ValidatePurpose(req.Purpose); err != nil {
+		ctrl.logger.Debug("can`t to validate purpose", zap.Error(err))
+		return ctx.JSON(models.ErrorResponse{
+			Message:   "invalid purpose",
+			ErrorCode: fiber.StatusBadRequest,
+		})
 	}
 
 	result, err := ctrl.srv.UpdateTemplate(context.Background(),
-		&dto.TestTemplate{Role: *req.Role, Purpose: *req.Purpose})
+		&dto.TestTemplate{Id: unmarshalId, Role: req.Role, Purpose: req.Purpose})
 	if err != nil {
 		ctrl.logger.Debug("can`t to update template", zap.Error(err))
 		return ctx.JSON(models.ErrorResponse{
@@ -156,7 +161,7 @@ func (ctrl *Controller) UpdateTemplateHandler(ctx *fiber.Ctx) error {
 		})
 	}
 
-	return ctx.JSON(models.UpdateTemplateResponse(*result))
+	return ctx.JSON(*result)
 }
 
 func (ctrl *Controller) DeleteTemplateHandler(ctx *fiber.Ctx) error {

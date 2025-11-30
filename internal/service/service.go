@@ -14,49 +14,6 @@ type QstnBnk struct {
 	Storage storage.Storage
 }
 
-func (q *QstnBnk) CreateTemplate(ctx context.Context, template *models.TestTemplate) error {
-	template.Id = uuid.New()
-	if err := q.Storage.CreateTemplate(ctx, *template); err != nil {
-		return err
-	}
-	return nil
-}
-
-func (q *QstnBnk) GetTemplate(ctx context.Context, id uuid.UUID) (*models.TestTemplate, error) {
-	result, err := q.Storage.GetTemplateById(ctx, id)
-	if err != nil {
-		return nil, err
-	}
-
-	return result, nil
-}
-
-func (q *QstnBnk) GetTemplatesCollectionWithFilters(ctx context.Context, role *types.ModelRole, purpose *types.ModelPurpose) ([]models.TestTemplate, error) {
-	result, err := q.Storage.GetTemplatesCollectionWithFilters(ctx, role, purpose)
-	if err != nil {
-		return nil, err
-	}
-
-	return result, nil
-}
-
-func (q *QstnBnk) UpdateTemplate(ctx context.Context, template *models.TestTemplate) (*models.TestTemplate, error) {
-	result, err := q.Storage.UpdateTemplate(ctx, *template)
-	if err != nil {
-		return nil, err
-	}
-
-	return &result, nil
-}
-
-func (q *QstnBnk) DeleteTemplate(ctx context.Context, id uuid.UUID) error {
-	if err := q.Storage.DeleteTemplate(ctx, id); err != nil {
-		return err
-	}
-
-	return nil
-}
-
 func (q *QstnBnk) CreateQuestion(ctx context.Context, question *models.Question, options *[]models.Option) error {
 	question.Id = uuid.New()
 	if err := q.Storage.CreateQuestion(ctx, question, options); err != nil {
@@ -89,7 +46,7 @@ func (q *QstnBnk) UpdateQuestion(ctx context.Context, question *models.Question)
 		return nil, err
 	}
 
-	return &result, nil
+	return result, nil
 }
 
 func (q *QstnBnk) DeleteQuestion(ctx context.Context, id uuid.UUID) error {
@@ -100,7 +57,52 @@ func (q *QstnBnk) DeleteQuestion(ctx context.Context, id uuid.UUID) error {
 	return nil
 }
 
-func (q *QstnBnk) Instantiate(ctx context.Context, templateId uuid.UUID) (uuid.UUID, [3]models.Question) {
-	var questions [3]models.Question
-	return uuid.New(), questions
+func (q *QstnBnk) CreateTemplate(ctx context.Context, template *models.TestTemplate) error {
+	template.Id = uuid.New()
+	if err := q.Storage.CreateTemplate(ctx, *template); err != nil {
+		return err
+	}
+	return nil
+}
+
+func (q *QstnBnk) GetTemplate(ctx context.Context, id uuid.UUID) (*models.TestTemplate, error) {
+	result, err := q.Storage.GetTemplateById(ctx, id)
+	if err != nil {
+		return nil, err
+	}
+
+	return result, nil
+}
+
+func (q *QstnBnk) GetTemplatesCollectionWithFilters(ctx context.Context, role *types.ModelRole, purpose *types.ModelPurpose) ([]models.TestTemplate, error) {
+	result, err := q.Storage.GetTemplatesCollectionWithFilters(ctx, role, purpose)
+	if err != nil {
+		return nil, err
+	}
+
+	return result, nil
+}
+
+func (q *QstnBnk) UpdateTemplate(ctx context.Context, template *models.TestTemplate) (*models.TestTemplate, error) {
+	result, err := q.Storage.UpdateTemplate(ctx, *template)
+	if err != nil {
+		return nil, err
+	}
+
+	return result, nil
+}
+
+func (q *QstnBnk) DeleteTemplate(ctx context.Context, id uuid.UUID) error {
+	if err := q.Storage.DeleteTemplate(ctx, id); err != nil {
+		return err
+	}
+
+	return nil
+}
+
+func (q *QstnBnk) Instantiate(ctx context.Context, templateId uuid.UUID) (uuid.UUID, []models.Question, []models.Option, error) {
+	var questions []models.Question
+	var options []models.Option
+
+	return uuid.New(), questions, options, nil
 }

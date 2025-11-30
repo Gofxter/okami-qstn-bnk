@@ -91,29 +91,40 @@ func (g *Gorm) GetQuestionsCollectionWithFilters(ctx context.Context, role *type
 	return qs, nil
 }
 
-func (g *Gorm) UpdateQuestion(ctx context.Context, q models.Question) (models.Question, error) {
+func (g *Gorm) UpdateQuestion(ctx context.Context, q models.Question) (*models.Question, error) {
 	result := g.db.WithContext(ctx).Model(&models.Question{}).Where("id = ?", q.Id).Updates(q)
 	if result.Error != nil {
 		if errors.Is(result.Error, gorm.ErrRecordNotFound) {
 			g.logger.Warn("Question not found", zap.Any("id", q.Id))
-			return models.Question{}, errors.New("question not found")
+			return nil, errors.New("question not found")
 		}
 
 		g.logger.Error("Failed to update question", zap.Error(result.Error))
-		return models.Question{}, result.Error
+		return nil, result.Error
 	}
 
-	var updatedTemplate models.Question
+	var updatedTemplate *models.Question
 	err := g.db.WithContext(ctx).Where("id = ?", q.Id).First(&updatedTemplate).Error
 	if err != nil {
 		g.logger.Error("Failed to fetch question", zap.Error(err))
-		return models.Question{}, err
+		return nil, err
 	}
 
 	return updatedTemplate, nil
 }
 
 func (g *Gorm) DeleteQuestion(ctx context.Context, id uuid.UUID) error {
+	option := g.db.WithContext(ctx).Where("question_id = ?", id).Delete(&models.Option{})
+	if option.Error != nil {
+		if errors.Is(option.Error, gorm.ErrRecordNotFound) {
+			g.logger.Warn("Question not found", zap.String("id", id.String()))
+			return errors.New("questions option not found")
+		}
+
+		g.logger.Error("Failed to delete questions option", zap.Error(option.Error))
+		return option.Error
+	}
+
 	question := g.db.WithContext(ctx).Delete(&models.Question{}, id)
 	if question.Error != nil {
 		if errors.Is(question.Error, gorm.ErrRecordNotFound) {
@@ -123,17 +134,6 @@ func (g *Gorm) DeleteQuestion(ctx context.Context, id uuid.UUID) error {
 
 		g.logger.Error("Failed to delete question", zap.Error(question.Error))
 		return question.Error
-	}
-
-	option := g.db.WithContext(ctx).Delete(&models.Option{}, id)
-	if option.Error != nil {
-		if errors.Is(option.Error, gorm.ErrRecordNotFound) {
-			g.logger.Warn("Question not found", zap.String("id", id.String()))
-			return errors.New("questions option not found")
-		}
-
-		g.logger.Error("Failed to delete questions option", zap.Error(option.Error))
-		return option.Error
 	}
 
 	return nil
@@ -166,7 +166,7 @@ func (g *Gorm) GetTemplateById(ctx context.Context, id uuid.UUID) (*models.TestT
 func (g *Gorm) GetTemplatesCollectionWithFilters(ctx context.Context, role *types.ModelRole, purpose *types.ModelPurpose) ([]models.TestTemplate, error) {
 	var qs []models.TestTemplate
 
-	query := g.db.WithContext(ctx).Model(&models.Question{})
+	query := g.db.WithContext(ctx).Model(&models.TestTemplate{})
 
 	if role != nil {
 		query = query.Where("role = ?", *role)
@@ -176,8 +176,7 @@ func (g *Gorm) GetTemplatesCollectionWithFilters(ctx context.Context, role *type
 		query = query.Where("topic = ?", *purpose)
 	}
 
-	err := query.Find(&qs).Error
-	if err != nil {
+	if err := query.Find(&qs).Error; err != nil {
 		g.logger.Error("Failed to get templates with filters", zap.Error(err))
 		return nil, err
 	}
@@ -185,23 +184,23 @@ func (g *Gorm) GetTemplatesCollectionWithFilters(ctx context.Context, role *type
 	return qs, nil
 }
 
-func (g *Gorm) UpdateTemplate(ctx context.Context, t models.TestTemplate) (models.TestTemplate, error) {
+func (g *Gorm) UpdateTemplate(ctx context.Context, t models.TestTemplate) (*models.TestTemplate, error) {
 	result := g.db.WithContext(ctx).Model(&models.TestTemplate{}).Where("id = ?", t.Id).Updates(t)
 	if result.Error != nil {
 		if errors.Is(result.Error, gorm.ErrRecordNotFound) {
 			g.logger.Warn("Template not found", zap.Any("id", t.Id))
-			return models.TestTemplate{}, errors.New("template not found")
+			return nil, errors.New("template not found")
 		}
 
 		g.logger.Error("Failed to update template", zap.Error(result.Error))
-		return models.TestTemplate{}, result.Error
+		return nil, result.Error
 	}
 
-	var updatedTemplate models.TestTemplate
+	var updatedTemplate *models.TestTemplate
 	err := g.db.WithContext(ctx).Where("id = ?", t.Id).First(&updatedTemplate).Error
 	if err != nil {
 		g.logger.Error("Failed to fetch updated template", zap.Error(err))
-		return models.TestTemplate{}, err
+		return nil, err
 	}
 
 	return updatedTemplate, nil
@@ -251,4 +250,14 @@ func (g *Gorm) Close(ctx context.Context) error {
 	}
 
 	return nil
+}
+
+func (g *Gorm) GetRandomQuestion(ctx context.Context) ([]models.Question, error) {
+	var qs []models.Question
+
+	//var products []Product
+	//err := db.Order("RANDOM()").Limit(3).Find(&products).Error
+	//return products, err
+
+	return qs, nil
 }

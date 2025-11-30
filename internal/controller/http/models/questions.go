@@ -47,13 +47,9 @@ type GetQuestionsWithFiltersResponse struct {
 
 type (
 	UpdateQuestionRequest struct {
-		Role       *types.ModelRole `json:"role"`
-		Topic      *string          `json:"topic"`
-		Difficulty *int             `json:"difficulty"`
-		Text       *string          `json:"text"`
-	}
-
-	OptionUpdateQuestionRequest struct {
-		Text *string `json:"text"`
+		Role       types.ModelRole `json:"role"`
+		Topic      string          `json:"topic"`
+		Difficulty int             `json:"difficulty"`
+		Text       string          `json:"text"`
 	}
 )

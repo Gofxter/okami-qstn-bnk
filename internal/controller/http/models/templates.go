@@ -23,12 +23,6 @@ type GetTemplatesWithFiltersResponse struct {
 
 type (
 	UpdateTemplateRequest struct {
-		Name    *string             `json:"name"`
-		Role    *types.ModelRole    `json:"role"`
-		Purpose *types.ModelPurpose `json:"purpose"`
-	}
-	UpdateTemplateResponse struct {
-		Id      uuid.UUID          `json:"id"`
 		Role    types.ModelRole    `json:"role"`
 		Purpose types.ModelPurpose `json:"purpose"`
 	}

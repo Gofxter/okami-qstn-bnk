@@ -1,4 +1,4 @@
-package controller
+package fiber
 
 import (
 	"context"
@@ -127,7 +127,16 @@ func (ctrl *Controller) GetQuestionsWithFiltersHandler(ctx *fiber.Ctx) error {
 }
 
 func (ctrl *Controller) UpdateQuestionHandler(ctx *fiber.Ctx) error {
-	req := models.UpdateQuestionRequest{Role: nil, Topic: nil, Difficulty: nil, Text: nil}
+	var req models.UpdateQuestionRequest
+	id := ctx.Params("id", "")
+	unmarshalId, err := uuid.Parse(id)
+	if err != nil {
+		ctrl.logger.Debug("can`t to parse id request", zap.Error(err))
+		return ctx.JSON(models.ErrorResponse{
+			Message:   "invalid id",
+			ErrorCode: fiber.StatusBadRequest,
+		})
+	}
 
 	if err := ctx.BodyParser(&req); err != nil {
 		ctrl.logger.Debug("can`t to parse body requests", zap.Any("body", req), zap.Error(err))
@@ -137,17 +146,15 @@ func (ctrl *Controller) UpdateQuestionHandler(ctx *fiber.Ctx) error {
 		})
 	}
 
-	if req.Role != nil {
-		if err := types.ValidateRole(*req.Role); err != nil {
-			ctrl.logger.Debug("can`t to validate role", zap.Error(err))
-			return ctx.JSON(models.ErrorResponse{
-				Message:   "invalid role",
-				ErrorCode: fiber.StatusBadRequest,
-			})
-		}
+	if err := types.ValidateRole(req.Role); err != nil {
+		ctrl.logger.Debug("can`t to validate role", zap.Error(err))
+		return ctx.JSON(models.ErrorResponse{
+			Message:   "invalid role",
+			ErrorCode: fiber.StatusBadRequest,
+		})
 	}
 
-	result, err := ctrl.srv.UpdateQuestion(context.Background(), &dto.Question{Role: *req.Role, Topic: *req.Topic, Difficulty: *req.Difficulty, Text: *req.Text})
+	result, err := ctrl.srv.UpdateQuestion(context.Background(), &dto.Question{Id: unmarshalId, Role: req.Role, Topic: req.Topic, Difficulty: req.Difficulty, Text: req.Text})
 	if err != nil {
 		ctrl.logger.Debug("can`t to update question", zap.Error(err))
 		return ctx.JSON(models.ErrorResponse{

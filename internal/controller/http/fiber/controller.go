@@ -1,4 +1,5 @@
-package controller
+// Package fiber implements the HTTP controller
+package fiber
 
 import (
 	"github.com/gofiber/fiber/v2"
@@ -41,6 +42,7 @@ func (ctrl *Controller) ConfigureRoutes() {
 			templates.Delete(":id", ctrl.DeleteTemplateHandler)
 		}
 
-		questionBank.Post("tests/instantiate", ctrl.BaseHandler)
+		questionBank.Post("tests/instantiate", ctrl.InstantiateHandler)
+		//questionBank.Get("/docs/*", swagger.New())
 	}
 }

@@ -20,6 +20,7 @@ type Service interface {
 	GetTemplatesCollectionWithFilters(ctx context.Context, role *types.ModelRole, purpose *types.ModelPurpose) ([]models.TestTemplate, error)
 	UpdateTemplate(ctx context.Context, template *models.TestTemplate) (*models.TestTemplate, error)
 	DeleteTemplate(ctx context.Context, id uuid.UUID) error
+	Instantiate(ctx context.Context, templateId uuid.UUID) (uuid.UUID, []models.Question, []models.Option, error)
 }
 
 func RegisterServices(logger *zap.Logger, storage storage.Storage) *QstnBnk {
