@@ -28,7 +28,6 @@ tasks:
     desc: "run all tests with code coverage report"
     cmds:
       - go test -coverprofile=coverage.out ./...
-      - go tool cover -func=coverage.out
 
   docker-up:
     desc: "build and run service with docker-compose"
