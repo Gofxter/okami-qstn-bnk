@@ -20,11 +20,6 @@
   task test-coverage
 ```
 
-- **internal/pkg/types**: покрытие **100%** 
-- **internal/service**: покрытие **~98%** 
-- **internal/storage/gorm**: покрытие **~61%** 
-
-
 ### Сценарии для запуска сервиса
 Локально:
 ```shell
