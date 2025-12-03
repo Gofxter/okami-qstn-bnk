@@ -43,6 +43,5 @@ func (ctrl *Controller) ConfigureRoutes() {
 		}
 
 		questionBank.Post("tests/instantiate", ctrl.InstantiateHandler)
-		//questionBank.Get("/docs/*", swagger.New())
 	}
 }

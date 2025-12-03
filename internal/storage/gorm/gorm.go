@@ -173,7 +173,7 @@ func (g *Gorm) GetTemplatesCollectionWithFilters(ctx context.Context, role *type
 	}
 
 	if purpose != nil {
-		query = query.Where("topic = ?", *purpose)
+		query = query.Where("purpose = ?", *purpose)
 	}
 
 	if err := query.Find(&qs).Error; err != nil {
@@ -252,12 +252,30 @@ func (g *Gorm) Close(ctx context.Context) error {
 	return nil
 }
 
-func (g *Gorm) GetRandomQuestion(ctx context.Context) ([]models.Question, error) {
+func (g *Gorm) GetRandomQuestion(ctx context.Context, templateId uuid.UUID) ([]models.Question, []models.Option, error) {
 	var qs []models.Question
+	var opt []models.Option
+	var template models.TestTemplate
+	var questionIDs []uuid.UUID
 
-	//var products []Product
-	//err := db.Order("RANDOM()").Limit(3).Find(&products).Error
-	//return products, err
+	if err := g.db.WithContext(ctx).First(&template, "id = ?", templateId).Error; err != nil {
+		g.logger.Error("Failed to get template", zap.Error(err))
+		return nil, nil, err
+	}
 
-	return qs, nil
+	if err := g.db.Order("RANDOM()").Limit(3).Where("role = ?", template.Role).Find(&qs).Error; err != nil {
+		g.logger.Error("Failed to get questions", zap.Error(err))
+		return nil, nil, err
+	}
+
+	for _, q := range qs {
+		questionIDs = append(questionIDs, q.Id)
+	}
+
+	if err := g.db.Where("question_id IN ?", questionIDs).Find(&opt).Error; err != nil {
+		g.logger.Error("Failed to get options", zap.Error(err))
+		return qs, nil, err
+	}
+
+	return qs, opt, nil
 }

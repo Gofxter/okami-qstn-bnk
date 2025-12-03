@@ -18,6 +18,7 @@ type Storage interface {
 	GetTemplatesCollectionWithFilters(ctx context.Context, role *types.ModelRole, purpose *types.ModelPurpose) ([]models.TestTemplate, error)
 	UpdateTemplate(ctx context.Context, t models.TestTemplate) (*models.TestTemplate, error)
 	DeleteTemplate(ctx context.Context, id uuid.UUID) error
+	GetRandomQuestion(ctx context.Context, templateId uuid.UUID) ([]models.Question, []models.Option, error)
 	Ping(ctx context.Context) error
 	Close(ctx context.Context) error
 }

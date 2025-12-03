@@ -101,8 +101,10 @@ func (q *QstnBnk) DeleteTemplate(ctx context.Context, id uuid.UUID) error {
 }
 
 func (q *QstnBnk) Instantiate(ctx context.Context, templateId uuid.UUID) (uuid.UUID, []models.Question, []models.Option, error) {
-	var questions []models.Question
-	var options []models.Option
+	questions, options, err := q.Storage.GetRandomQuestion(ctx, templateId)
+	if err != nil {
+		return uuid.Nil, nil, nil, err
+	}
 
 	return uuid.New(), questions, options, nil
 }

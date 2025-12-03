@@ -16,7 +16,12 @@ import (
 
 func main() {
 	logger, _ := zap.NewDevelopment()
-	cfg := config.LoadConfig("config/config.yaml", logger)
+	configPath := os.Getenv("CONFIG_PATH")
+	if configPath == "" {
+		configPath = "config/config.yaml"
+	}
+
+	cfg := config.LoadConfig(configPath, logger)
 	cfg.Storage.SetURI(logger)
 
 	storage := gorm.NewStorage(logger, cfg.Storage.GetURI())
