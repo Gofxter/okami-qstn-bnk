@@ -2,11 +2,12 @@ package service
 
 import (
 	"context"
-	"github.com/google/uuid"
-	"go.uber.org/zap"
 	models "okami-qstn-bnk/internal/models/dto"
 	"okami-qstn-bnk/internal/pkg/types"
 	"okami-qstn-bnk/internal/storage"
+
+	"github.com/google/uuid"
+	"go.uber.org/zap"
 )
 
 type Service interface {

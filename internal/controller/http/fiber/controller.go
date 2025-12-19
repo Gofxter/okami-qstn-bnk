@@ -2,9 +2,10 @@
 package fiber
 
 import (
+	"okami-qstn-bnk/internal/service"
+
 	"github.com/gofiber/fiber/v2"
 	"go.uber.org/zap"
-	"okami-qstn-bnk/internal/service"
 )
 
 type Controller struct {

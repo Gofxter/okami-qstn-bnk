@@ -3,8 +3,6 @@ package main
 import (
 	"context"
 	"fmt"
-	"github.com/gofiber/fiber/v2"
-	"go.uber.org/zap"
 	"okami-qstn-bnk/internal/config"
 	controller "okami-qstn-bnk/internal/controller/http/fiber"
 	"okami-qstn-bnk/internal/service"
@@ -12,6 +10,9 @@ import (
 	"os"
 	"os/signal"
 	"syscall"
+
+	"github.com/gofiber/fiber/v2"
+	"go.uber.org/zap"
 )
 
 func main() {
@@ -21,7 +22,11 @@ func main() {
 		configPath = "config/config.yaml"
 	}
 
-	cfg := config.LoadConfig(configPath, logger)
+	cfg, err := config.LoadConfig(configPath, logger)
+	if err != nil {
+		logger.Fatal("failed to load config", zap.Error(err))
+	}
+
 	cfg.Storage.SetURI(logger)
 
 	storage := gorm.NewStorage(logger, cfg.Storage.GetURI())

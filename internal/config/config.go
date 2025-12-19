@@ -17,7 +17,7 @@ type ServiceConfig struct {
 	Port    string
 }
 
-func LoadConfig(path string, logger *zap.Logger) *Config {
+func LoadConfig(path string, logger *zap.Logger) (*Config, error) {
 	var cfg = &Config{
 		Service: ServiceConfig{
 			Timeout: 2 * time.Second,
@@ -34,14 +34,14 @@ func LoadConfig(path string, logger *zap.Logger) *Config {
 
 	if _, err := os.Stat(path); os.IsNotExist(err) {
 		logger.Debug("config file does not exist", zap.Any("path", path))
-		return nil
+		return nil, err
 	}
 
 	if err := cleanenv.ReadConfig(path, cfg); err != nil {
 		logger.Debug("failed to read config", zap.Error(err))
-		return nil
+		return nil, err
 	}
 
 	logger.Info("successfully loaded config", zap.Any("config", cfg))
-	return cfg
+	return cfg, nil
 }
