@@ -43,6 +43,6 @@ func (ctrl *Controller) ConfigureRoutes() {
 			templates.Delete(":id", ctrl.DeleteTemplateHandler)
 		}
 
-		questionBank.Post("tests/instantiate", ctrl.InstantiateHandler)
+		//questionBank.Post("tests/instantiate", ctrl.InstantiateHandler)
 	}
 }

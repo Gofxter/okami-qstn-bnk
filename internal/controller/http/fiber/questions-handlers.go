@@ -7,7 +7,6 @@ import (
 	"go.uber.org/zap"
 	"okami-qstn-bnk/internal/controller/http/models"
 	dto "okami-qstn-bnk/internal/models/dto"
-	"okami-qstn-bnk/internal/pkg/types"
 )
 
 func (ctrl *Controller) CreateQuestionsHandler(ctx *fiber.Ctx) error {
@@ -22,16 +21,16 @@ func (ctrl *Controller) CreateQuestionsHandler(ctx *fiber.Ctx) error {
 		})
 	}
 
-	if err := types.ValidateRole(req.Role); err != nil {
-		ctrl.logger.Debug("can`t to validate role", zap.Error(err))
+	if !req.Role.IsValid() {
+		ctrl.logger.Debug("can`t to validate role")
 		return ctx.JSON(models.ErrorResponse{
 			Message:   "invalid role",
 			ErrorCode: fiber.StatusBadRequest,
 		})
 	}
 
-	if err := types.ValidateType(req.Type); err != nil {
-		ctrl.logger.Debug("can`t to validate type", zap.Error(err))
+	if !req.Type.IsValid() {
+		ctrl.logger.Debug("can`t to validate type")
 		return ctx.JSON(models.ErrorResponse{
 			Message:   "invalid type",
 			ErrorCode: fiber.StatusBadRequest,
@@ -105,8 +104,8 @@ func (ctrl *Controller) GetQuestionsWithFiltersHandler(ctx *fiber.Ctx) error {
 	}
 
 	if query.Role != nil {
-		if err := types.ValidateRole(*query.Role); err != nil {
-			ctrl.logger.Debug("can`t to validate role", zap.Error(err))
+		if !query.Role.IsValid() {
+			ctrl.logger.Debug("can`t to validate role")
 			return ctx.JSON(models.ErrorResponse{
 				Message:   "invalid role",
 				ErrorCode: fiber.StatusBadRequest,
@@ -146,8 +145,8 @@ func (ctrl *Controller) UpdateQuestionHandler(ctx *fiber.Ctx) error {
 		})
 	}
 
-	if err := types.ValidateRole(req.Role); err != nil {
-		ctrl.logger.Debug("can`t to validate role", zap.Error(err))
+	if !req.Role.IsValid() {
+		ctrl.logger.Debug("can`t to validate role")
 		return ctx.JSON(models.ErrorResponse{
 			Message:   "invalid role",
 			ErrorCode: fiber.StatusBadRequest,

@@ -17,7 +17,7 @@ type (
 
 	QuestionInInstantiateResponse struct {
 		QuestionId uuid.UUID                               `json:"question_id"`
-		Type       types.ModelType                         `json:"type" `
+		Type       types.QuestionType                      `json:"type" `
 		Difficulty int                                     `json:"difficulty"`
 		Text       string                                  `json:"text"`
 		Options    []OptionInQuestionInInstantiateResponse `json:"options"`

@@ -1,4 +1,4 @@
-package service
+package prod
 
 import (
 	"context"
@@ -31,7 +31,7 @@ func (q *QstnBnk) GetQuestion(ctx context.Context, id uuid.UUID) (*models.Questi
 	return result, nil
 }
 
-func (q *QstnBnk) GetQuestionsCollectionWithFilters(ctx context.Context, role *types.ModelRole, topic *string, difficulty *int) ([]models.Question, error) {
+func (q *QstnBnk) GetQuestionsCollectionWithFilters(ctx context.Context, role *types.UserRole, topic *string, difficulty *int) ([]models.Question, error) {
 	result, err := q.Storage.GetQuestionsCollectionWithFilters(ctx, role, topic, difficulty)
 	if err != nil {
 		return nil, err
@@ -74,7 +74,7 @@ func (q *QstnBnk) GetTemplate(ctx context.Context, id uuid.UUID) (*models.TestTe
 	return result, nil
 }
 
-func (q *QstnBnk) GetTemplatesCollectionWithFilters(ctx context.Context, role *types.ModelRole, purpose *types.ModelPurpose) ([]models.TestTemplate, error) {
+func (q *QstnBnk) GetTemplatesCollectionWithFilters(ctx context.Context, role *types.UserRole, purpose *types.TemplatePurpose) ([]models.TestTemplate, error) {
 	result, err := q.Storage.GetTemplatesCollectionWithFilters(ctx, role, purpose)
 	if err != nil {
 		return nil, err

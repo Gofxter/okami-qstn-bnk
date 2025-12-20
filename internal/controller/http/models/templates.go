@@ -7,8 +7,8 @@ import (
 )
 
 type CreateTemplateRequest struct {
-	Role    types.ModelRole    `json:"role"`
-	Purpose types.ModelPurpose `json:"purpose"`
+	Role    types.UserRole        `json:"role"`
+	Purpose types.TemplatePurpose `json:"purpose"`
 }
 
 type GetTemplateByIDResponse struct {
@@ -23,7 +23,7 @@ type GetTemplatesWithFiltersResponse struct {
 
 type (
 	UpdateTemplateRequest struct {
-		Role    types.ModelRole    `json:"role"`
-		Purpose types.ModelPurpose `json:"purpose"`
+		Role    types.UserRole        `json:"role"`
+		Purpose types.TemplatePurpose `json:"purpose"`
 	}
 )

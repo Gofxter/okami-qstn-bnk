@@ -1,47 +1,50 @@
 package types
 
-import (
-	"errors"
-	"fmt"
+type UserRole string
+
+const (
+	UserRoleNone  UserRole = ""
+	UserRoleAdmin UserRole = "admin"
+	UserRoleUser  UserRole = "user"
 )
 
-type (
-	ModelRole    string
-	ModelType    string
-	ModelPurpose string
+func (ur UserRole) IsValid() bool {
+	switch ur {
+	case UserRoleNone, UserRoleAdmin, UserRoleUser:
+		return true
+	}
+	return false
+}
+
+type QuestionType string
+
+const (
+	SingleChoice QuestionType = "single_choice"
+	MultiChoice  QuestionType = "multi_choice"
+	Text         QuestionType = "text"
 )
 
-func ValidateRole(r ModelRole) error {
-	switch r {
-	case "frontend_junior":
-		return nil
-	case "backend_junior":
-		return nil
+func (qt QuestionType) IsValid() bool {
+	switch qt {
+	case SingleChoice, MultiChoice, Text:
+		return true
+	default:
+		return false
 	}
-
-	return errors.New(fmt.Sprintf("invalid type %s", r))
 }
 
-func ValidateType(t ModelType) error {
-	switch t {
-	case "single_choice":
-		return nil
-	case "multi_choice":
-		return nil
-	case "text":
-		return nil
+type TemplatePurpose string
+
+const (
+	SkillsAssessment TemplatePurpose = "skills_assessment"
+	MockInterview    TemplatePurpose = "mock_interview"
+)
+
+func (pt TemplatePurpose) IsValid() bool {
+	switch pt {
+	case SkillsAssessment, MockInterview:
+		return true
+	default:
+		return false
 	}
-
-	return errors.New(fmt.Sprintf("invalid type %s", t))
-}
-
-func ValidatePurpose(p ModelPurpose) error {
-	switch p {
-	case "skills_assessment":
-		return nil
-	case "mock_interview":
-		return nil
-	}
-
-	return errors.New(fmt.Sprintf("invalid type %s", p))
 }

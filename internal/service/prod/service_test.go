@@ -1,4 +1,4 @@
-package service_test
+package prod_test
 
 import (
 	"context"
@@ -12,15 +12,14 @@ import (
 
 	models "okami-qstn-bnk/internal/models/dto"
 	"okami-qstn-bnk/internal/pkg/types"
-	"okami-qstn-bnk/internal/service"
 	mocks "okami-qstn-bnk/mocks/storage"
 )
 
-func newTestService(t *testing.T) (*service.QstnBnk, *mocks.MockStorage, *gomock.Controller) {
+func newTestService(t *testing.T) (*QstnBnk, *mocks.MockStorage, *gomock.Controller) {
 	ctrl := gomock.NewController(t)
 	mockStor := mocks.NewMockStorage(ctrl)
 	logger, _ := zap.NewDevelopment()
-	return &service.QstnBnk{Logger: logger, Storage: mockStor}, mockStor, ctrl
+	return &QstnBnk{Logger: logger, Storage: mockStor}, mockStor, ctrl
 }
 
 func TestQstnBnk_CreateQuestion(t *testing.T) {

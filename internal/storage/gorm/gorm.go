@@ -67,7 +67,7 @@ func (g *Gorm) GetQuestionById(ctx context.Context, id uuid.UUID) (*models.Quest
 	return &q, nil
 }
 
-func (g *Gorm) GetQuestionsCollectionWithFilters(ctx context.Context, role *types.ModelRole, topic *string, difficulty *int) ([]models.Question, error) {
+func (g *Gorm) GetQuestionsCollectionWithFilters(ctx context.Context, role *types.UserRole, topic *string, difficulty *int) ([]models.Question, error) {
 	var qs []models.Question
 
 	query := g.db.WithContext(ctx).Model(&models.Question{})
@@ -163,7 +163,7 @@ func (g *Gorm) GetTemplateById(ctx context.Context, id uuid.UUID) (*models.TestT
 	return &t, nil
 }
 
-func (g *Gorm) GetTemplatesCollectionWithFilters(ctx context.Context, role *types.ModelRole, purpose *types.ModelPurpose) ([]models.TestTemplate, error) {
+func (g *Gorm) GetTemplatesCollectionWithFilters(ctx context.Context, role *types.UserRole, purpose *types.TemplatePurpose) ([]models.TestTemplate, error) {
 	var qs []models.TestTemplate
 
 	query := g.db.WithContext(ctx).Model(&models.TestTemplate{})

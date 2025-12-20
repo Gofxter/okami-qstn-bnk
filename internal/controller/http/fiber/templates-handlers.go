@@ -7,7 +7,6 @@ import (
 	"go.uber.org/zap"
 	"okami-qstn-bnk/internal/controller/http/models"
 	dto "okami-qstn-bnk/internal/models/dto"
-	"okami-qstn-bnk/internal/pkg/types"
 )
 
 func (ctrl *Controller) CreateTemplateHandler(ctx *fiber.Ctx) error {
@@ -21,16 +20,16 @@ func (ctrl *Controller) CreateTemplateHandler(ctx *fiber.Ctx) error {
 		})
 	}
 
-	if err := types.ValidateRole(req.Role); err != nil {
-		ctrl.logger.Debug("can`t to validate role", zap.Error(err))
+	if !req.Role.IsValid() {
+		ctrl.logger.Debug("can`t to validate role")
 		return ctx.JSON(models.ErrorResponse{
 			Message:   "invalid role",
 			ErrorCode: fiber.StatusBadRequest,
 		})
 	}
 
-	if err := types.ValidatePurpose(req.Purpose); err != nil {
-		ctrl.logger.Debug("can`t to validate purpose", zap.Error(err))
+	if !req.Purpose.IsValid() {
+		ctrl.logger.Debug("can`t to validate purpose")
 		return ctx.JSON(models.ErrorResponse{
 			Message:   "invalid purpose",
 			ErrorCode: fiber.StatusBadRequest,
@@ -84,7 +83,7 @@ func (ctrl *Controller) GetTemplatesWithFiltersHandler(ctx *fiber.Ctx) error {
 	}
 
 	if query.Role != nil {
-		if err := types.ValidateRole(*query.Role); err != nil {
+		if !query.Role.IsValid() {
 			ctrl.logger.Debug("can`t to validate role")
 			return ctx.JSON(models.ErrorResponse{
 				Message:   "invalid role",
@@ -94,8 +93,8 @@ func (ctrl *Controller) GetTemplatesWithFiltersHandler(ctx *fiber.Ctx) error {
 	}
 
 	if query.Purpose != nil {
-		if err := types.ValidatePurpose(*query.Purpose); err != nil {
-			ctrl.logger.Debug("can`t to validate purpose", zap.Error(err))
+		if !query.Purpose.IsValid() {
+			ctrl.logger.Debug("can`t to validate purpose")
 			return ctx.JSON(models.ErrorResponse{
 				Message:   "invalid purpose",
 				ErrorCode: fiber.StatusBadRequest,
@@ -135,7 +134,7 @@ func (ctrl *Controller) UpdateTemplateHandler(ctx *fiber.Ctx) error {
 		})
 	}
 
-	if err := types.ValidateRole(req.Role); err != nil {
+	if !req.Role.IsValid() {
 		ctrl.logger.Debug("can`t to validate role")
 		return ctx.JSON(models.ErrorResponse{
 			Message:   "invalid role",
@@ -143,7 +142,7 @@ func (ctrl *Controller) UpdateTemplateHandler(ctx *fiber.Ctx) error {
 		})
 	}
 
-	if err := types.ValidatePurpose(req.Purpose); err != nil {
+	if !req.Purpose.IsValid() {
 		ctrl.logger.Debug("can`t to validate purpose", zap.Error(err))
 		return ctx.JSON(models.ErrorResponse{
 			Message:   "invalid purpose",

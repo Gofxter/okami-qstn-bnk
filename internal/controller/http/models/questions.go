@@ -8,9 +8,9 @@ import (
 
 type (
 	CreateQuestionRequest struct {
-		Role       types.ModelRole                `json:"role"`
+		Role       types.UserRole                 `json:"role"`
 		Topic      string                         `json:"topic"`
-		Type       types.ModelType                `json:"type"`
+		Type       types.QuestionType             `json:"type"`
 		Options    *[]OptionCreateQuestionRequest `json:"options"`
 		Difficulty int                            `json:"difficulty"`
 		Text       string                         `json:"text"`
@@ -25,9 +25,9 @@ type (
 type (
 	GetQuestionByIDResponse struct {
 		Id         uuid.UUID                                 `json:"id"`
-		Role       types.ModelRole                           `json:"role"`
+		Role       types.UserRole                            `json:"role"`
 		Topic      string                                    `json:"topic"`
-		Type       types.ModelType                           `json:"type"`
+		Type       types.QuestionType                        `json:"type"`
 		Options    *[]OptionGetQuestionsByQuestionIDResponse `json:"options"`
 		Difficulty int                                       `json:"difficulty"`
 		Text       string                                    `json:"text"`
@@ -47,9 +47,9 @@ type GetQuestionsWithFiltersResponse struct {
 
 type (
 	UpdateQuestionRequest struct {
-		Role       types.ModelRole `json:"role"`
-		Topic      string          `json:"topic"`
-		Difficulty int             `json:"difficulty"`
-		Text       string          `json:"text"`
+		Role       types.UserRole `json:"role"`
+		Topic      string         `json:"topic"`
+		Difficulty int            `json:"difficulty"`
+		Text       string         `json:"text"`
 	}
 )

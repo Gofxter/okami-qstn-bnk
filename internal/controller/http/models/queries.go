@@ -5,12 +5,12 @@ import (
 )
 
 type QuestionsQueryRequest struct {
-	Role       *types.ModelRole `query:"role"`
-	Topic      *string          `query:"topic"`
-	Difficulty *int             `query:"difficulty"`
+	Role       *types.UserRole `query:"role"`
+	Topic      *string         `query:"topic"`
+	Difficulty *int            `query:"difficulty"`
 }
 
 type TemplatesQueryRequest struct {
-	Role    *types.ModelRole    `query:"role"`
-	Purpose *types.ModelPurpose `query:"purpose"`
+	Role    *types.UserRole        `query:"role"`
+	Purpose *types.TemplatePurpose `query:"purpose"`
 }

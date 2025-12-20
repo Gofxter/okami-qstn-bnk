@@ -7,12 +7,12 @@ import (
 
 type (
 	Question struct {
-		Id         uuid.UUID       `json:"id" gorm:"type:uuid;default:uuid_generate_v4();primary_key;unique"`
-		Role       types.ModelRole `json:"role" gorm:"type:varchar(25);not null"`
-		Topic      string          `json:"topic" gorm:"type:varchar(150);not null"`
-		Type       types.ModelType `json:"type" gorm:"type:varchar(25);not null"`
-		Difficulty int             `json:"difficulty" gorm:"type:smallint;not null"`
-		Text       string          `json:"text" gorm:"type:text;not null"`
+		Id         uuid.UUID          `json:"id" gorm:"type:uuid;default:uuid_generate_v4();primary_key;unique"`
+		Role       types.UserRole     `json:"role" gorm:"type:varchar(25);not null"`
+		Topic      string             `json:"topic" gorm:"type:varchar(150);not null"`
+		Type       types.QuestionType `json:"type" gorm:"type:varchar(25);not null"`
+		Difficulty int                `json:"difficulty" gorm:"type:smallint;not null"`
+		Text       string             `json:"text" gorm:"type:text;not null"`
 	}
 
 	Option struct {
@@ -26,7 +26,7 @@ type (
 )
 
 type TestTemplate struct {
-	Id      uuid.UUID          `json:"id" gorm:"type:uuid;default:uuid_generate_v4();primary_key;unique"`
-	Role    types.ModelRole    `json:"role" gorm:"type:varchar(25);not null"`
-	Purpose types.ModelPurpose `json:"purpose" gorm:"type:varchar(50);not null"`
+	Id      uuid.UUID             `json:"id" gorm:"type:uuid;default:uuid_generate_v4();primary_key;unique"`
+	Role    types.UserRole        `json:"role" gorm:"type:varchar(25);not null"`
+	Purpose types.TemplatePurpose `json:"purpose" gorm:"type:varchar(50);not null"`
 }
