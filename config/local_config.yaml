@@ -1,0 +1,31 @@
+env: "local"
+
+service:
+  timeout: "2s"
+  port: ":1606"
+
+storage:
+  connection:
+    host: "localhost"
+    port: 5432
+    database: "postgres"
+    password: "postgres"
+    username: "postgres"
+    uri: "postgresql://%s:%s@%s:%s/%s"
+
+  parameters:
+    max_open_connections: 5
+    max_conn_max: 5
+
+kafka:
+  brokers: [
+    "localhost:9092"
+  ]
+  topic: "logs"
+  "compression": "gzip",
+  "batch_size": 100,
+  "flush_interval_ms": 2000,
+
+prometheus:
+  port: 1488
+

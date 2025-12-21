@@ -1,10 +1,10 @@
 version: "3"
 tasks:
-  local-run:
-    desc: "start service"
+  run:
+    desc: "local start service"
     cmds:
       - migrate -path ./migrations -database "postgres://postgres:postgres@localhost:5432/postgres?sslmode=disable" up
-      - CONFIG_PATH=config/config.yaml go run cmd/server/main.go
+      - go run cmd/server/main.go
 
   gen-mock:
     desc: "generating mocks for storage, service layers"
@@ -23,23 +23,3 @@ tasks:
   migrate-down:
     desc: "migrate down"
     cmd: migrate -path ./migrations -database "postgres://postgres:postgres@localhost:5432/postgres?sslmode=disable" down
-
-  test-coverage:
-    desc: "run all tests with code coverage report"
-    cmds:
-      - go test -coverprofile=coverage.out ./...
-
-  docker-up:
-    desc: "build and run service with docker-compose"
-    dir: ./infra
-    cmd: docker compose up --build
-
-  docker-down:
-    desc: "stop docker-compose stack (keep volumes)"
-    dir: ./infra
-    cmd: docker compose down
-
-  docker-down-volumes:
-    desc: "stop docker-compose stack and remove volumes"
-    dir: ./infra
-    cmd: docker compose down -v

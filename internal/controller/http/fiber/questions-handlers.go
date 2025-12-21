@@ -15,9 +15,8 @@ func (ctrl *Controller) CreateQuestionsHandler(ctx *fiber.Ctx) error {
 
 	if err := ctx.BodyParser(&req); err != nil {
 		ctrl.logger.Debug("can`t to parse body requests", zap.Any("body", req), zap.Error(err))
-		return ctx.JSON(models.ErrorResponse{
-			Message:   "invalid request body",
-			ErrorCode: fiber.StatusBadRequest,
+		return ctx.Status(fiber.StatusBadRequest).JSON(fiber.Map{
+			"message": "invalid request body",
 		})
 	}
 

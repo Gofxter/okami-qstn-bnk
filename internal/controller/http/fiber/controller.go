@@ -23,7 +23,7 @@ func NewController(logger *zap.Logger, srv service.Service, fiber *fiber.App) *C
 }
 
 func (ctrl *Controller) ConfigureRoutes() {
-	questionBank := ctrl.app.Group("/question-bank")
+	questionBank := ctrl.app.Group("/question-bank", ctrl.MiddleWare)
 	{
 		questions := questionBank.Group("/questions")
 		{
